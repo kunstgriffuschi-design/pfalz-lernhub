@@ -120,6 +120,36 @@
   }
   .karte .oeffnen::after { content: " →"; }
 
+  .wunsch {
+    margin-top: 40px;
+    background: #fff;
+    border: 1px solid #e2ddd0;
+    border-top: 4px solid var(--pd-gold);
+    padding: 28px;
+    text-align: center;
+  }
+  .wunsch h2 { font-size: 1.5rem; }
+  .wunsch h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    background: var(--pd-rot);
+    margin: 10px auto 0;
+  }
+  .wunsch p { max-width: 620px; margin: 14px auto 0; font-size: 0.98rem; }
+  .wunsch .cta {
+    display: inline-block;
+    margin-top: 18px;
+    background: var(--pd-navy);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 11px 24px;
+  }
+  .wunsch .unterschrift { margin-top: 14px; font-size: 0.88rem; color: #5a6577; }
+
   .pakete {
     margin-top: 40px;
     background: var(--pd-navy);
@@ -260,6 +290,13 @@
   <div class="leer" id="leer-hinweis">
     In dieser Rubrik ist noch keine Lernseite veröffentlicht – sie ist in Arbeit und erscheint hier automatisch, sobald sie fertig ist.
   </div>
+
+  <section class="wunsch">
+    <h2>Dir fehlt ein Thema? Sag es uns.</h2>
+    <p>Dieser Lern-Hub wächst nicht nach Plan, sondern nach Bedarf – also nach dem, was dir gerade wirklich weiterhilft. Wenn du zu einem KI-Thema eine Schritt-für-Schritt-Anleitung suchst und hier nicht fündig wirst: Schreib uns zwei Sätze – welches Thema, und wobei es dir helfen soll. Du bekommst eine persönliche Antwort von uns, keinen Autoresponder. Und wenn dein Wunsch vielen hilft, bauen wir die Lernseite dazu – du erfährst es als Erste oder Erster.</p>
+    <a class="cta" href="mailto:info@engelmann-promotion.de?subject=Mein%20Themenwunsch%20f%C3%BCr%20den%20Lern-Hub&body=Hallo%20Pfalz-Digital-Team%2C%0D%0A%0D%0Amir%20fehlt%20eine%20Anleitung%20zu%20folgendem%20Thema%3A%0D%0A...%0D%0A%0D%0ADabei%20soll%20sie%20mir%20helfen%3A%0D%0A...%0D%0A%0D%0AViele%20Gr%C3%BC%C3%9Fe">Mein Wunsch-Thema melden</a>
+    <div class="unterschrift">Wir lesen jede Nachricht selbst – versprochen. Jörg &amp; das Pfalz-Digital-Team</div>
+  </section>
 
   <section class="pakete">
     <h2>Tiefer einsteigen? Unsere Wissenspakete.</h2>
