@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pfalz Digital Lern-Hub – KI-Wissen zum Nachschlagen</title>
-<meta name="description" content="Der Lern-Hub von Pfalz Digital: Anleitungen und Lernseiten rund um KI-Videos, Claude und KI-Kennzeichnung – frei zugänglich, zum Nachschlagen und Weitergeben.">
+<meta name="description" content="Der Lern-Hub von Pfalz Digital: kostenlose Grundlagen-Anleitungen rund um KI-Videos, Claude und KI-Kennzeichnung – plus Wissenspakete für alle, die tiefer einsteigen wollen.">
 <link rel="stylesheet" href="assets/fonts.css">
 <style>
   :root {
@@ -120,6 +120,33 @@
   }
   .karte .oeffnen::after { content: " →"; }
 
+  .pakete {
+    margin-top: 40px;
+    background: var(--pd-navy);
+    color: #fff;
+    padding: 30px 28px;
+  }
+  .pakete h2 { font-size: 1.5rem; margin-bottom: 10px; }
+  .pakete h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    background: var(--pd-rot);
+    margin-top: 10px;
+  }
+  .pakete p { max-width: 640px; font-size: 0.98rem; color: #e8ebf1; margin-top: 12px; }
+  .pakete .cta {
+    display: inline-block;
+    margin-top: 18px;
+    background: var(--pd-rot);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 11px 22px;
+  }
+
   .leer {
     display: none;
     margin-top: 18px;
@@ -219,6 +246,12 @@
   <div class="leer" id="leer-hinweis">
     In dieser Rubrik ist noch keine Lernseite veröffentlicht – sie ist in Arbeit und erscheint hier automatisch, sobald sie fertig ist.
   </div>
+
+  <section class="pakete">
+    <h2>Tiefer einsteigen? Unsere Wissenspakete.</h2>
+    <p>Die Anleitungen hier sind der freie Einstieg. Wer KI im eigenen Unternehmen wirklich einführen will, bekommt in unseren Wissenspaketen die komplette Strecke: Videolektionen zu jedem Kapitel, fertige Vorlagen zum Übernehmen (KI-Richtlinie, Einwilligungen, Kennzeichnung), eine persönliche Fragerunde – und einen Teilnahmenachweis für die KI-Kompetenz-Anforderung nach Art. 4 EU AI Act.</p>
+    <a class="cta" href="mailto:info@engelmann-promotion.de?subject=Anfrage%20Wissenspakete%20Lern-Hub">Unverbindlich anfragen</a>
+  </section>
 </main>
 
 <footer>
