@@ -13,6 +13,7 @@ Look – ohne Monatsgebühr, gehostet über Netlify.
 | `index.html` | Hub-Startseite mit Themen-Rubriken und Kacheln |
 | `lernseiten/` | Eine HTML-Datei pro Lernseite (selbst-enthalten, Fonts eingebettet) |
 | `assets/fonts.css` | Markenschriften Anton + Hanken Grotesk als Data-URI (DSGVO-sicher, kein Google-Abruf) |
+| `media/` | Videos und Bilder, selbst gehostet (kein YouTube-Embed → DSGVO-sicher) |
 
 ## Neue Lernseite veröffentlichen
 
@@ -23,6 +24,14 @@ Look – ohne Monatsgebühr, gehostet über Netlify.
    (`ki-videos`, `claude`, `recht`).
 3. Beides committen und zu GitHub pushen – Netlify stellt die Seite danach
    automatisch online.
+
+## Startervideo aktivieren
+
+Der Begrüßungsblock ist in `index.html` schon vorbereitet, aber ausgeblendet.
+Sobald Jörgs Original-Aufnahme fertig ist: MP4 als
+`media/startervideo-joerg.mp4` ablegen, im `<section id="starter">`-Tag das
+Wort `hidden` entfernen, committen, pushen. (Genaue Schritte stehen als
+Kommentar direkt über dem Block in `index.html`.)
 
 ## Regeln
 

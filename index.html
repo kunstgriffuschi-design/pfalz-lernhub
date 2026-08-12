@@ -131,6 +131,27 @@
   }
   .leer.sichtbar { display: block; }
 
+  .starter {
+    max-width: 1000px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+  }
+  .starter-innen {
+    background: #fff;
+    border: 1px solid #e2ddd0;
+    border-top: 4px solid var(--pd-rot);
+    padding: 22px;
+  }
+  .starter h2 { font-size: 1.5rem; margin-bottom: 6px; }
+  .starter .starter-text { font-size: 0.98rem; margin-bottom: 16px; }
+  .starter video {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    background: var(--pd-navy);
+  }
+
   footer {
     background: var(--pd-navy);
     color: #cfd6e2;
@@ -158,6 +179,23 @@
     <p class="untertitel">KI-Wissen zum Nachschlagen: Anleitungen und Lernseiten aus unserer Praxis – Thema aussuchen, Kachel anklicken, loslegen.</p>
   </div>
 </header>
+
+<!-- ═══ STARTERVIDEO (Jörg, Original-Aufnahme) ═══
+     Aktivieren, sobald die Aufnahme fertig ist:
+     1. Videodatei als  media/startervideo-joerg.mp4  ins Repo legen
+        (optional Vorschaubild als  media/startervideo-poster.jpg)
+     2. Unten im <section>-Tag das Wort  hidden  entfernen
+     3. Committen und pushen – fertig. -->
+<section class="starter" id="starter" hidden>
+  <div class="starter-innen">
+    <h2>Start hier: Begrüßung von Jörg</h2>
+    <p class="starter-text">In 90 Sekunden: Was dich im Lern-Hub erwartet – und wie du das Beste herausholst.</p>
+    <video controls preload="metadata" poster="media/startervideo-poster.jpg">
+      <source src="media/startervideo-joerg.mp4" type="video/mp4">
+      Dein Browser kann dieses Video nicht abspielen.
+    </video>
+  </div>
+</section>
 
 <nav class="filter" aria-label="Themen-Rubriken">
   <button class="aktiv" data-rubrik="alle">Alle Themen</button>
