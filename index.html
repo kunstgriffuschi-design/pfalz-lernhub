@@ -75,6 +75,32 @@
     border-color: var(--pd-navy);
   }
   .filter button.aktiv::before { content: "● "; color: var(--pd-rot); }
+  .filter a.direktlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Hanken Grotesk', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--pd-rot);
+    background: #fff;
+    border: 1.5px solid var(--pd-rot);
+    border-radius: 999px;
+    padding: 7px 18px;
+    text-decoration: none;
+  }
+  .filter a.direktlink:hover { background: var(--pd-rot); color: #fff; }
+  .filter a.direktlink .mini {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--pd-rot);
+    color: #fff;
+    border-radius: 3px;
+    padding: 1px 6px;
+  }
+  .filter a.direktlink:hover .mini { background: #fff; color: var(--pd-rot); }
 
   main { max-width: 1000px; margin: 0 auto; padding: 24px 24px 64px; }
   .raster {
@@ -111,6 +137,35 @@
     margin-bottom: 14px;
   }
   .karte h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.25; }
+
+  /* Interne Inhalte: Solange die Seite team-intern ist, sind sie sichtbar.
+     VOR DEM ÖFFENTLICHEN GO-LIVE: diese Zeile auf display:none stellen
+     (oder einzelne Karten durch Entfernen von data-intern freischalten). */
+  .karte[data-intern] { display: flex; }
+  .intern-band {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--pd-rot);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin: 0 0 14px 8px;
+  }
+  .intern-hinweis {
+    display: block;
+    max-width: 1000px;
+    margin: 18px auto 0;
+    padding: 10px 24px;
+  }
+  .intern-hinweis-innen {
+    background: #fff;
+    border: 1.5px dashed var(--pd-rot);
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
   .karte p { font-size: 0.95rem; flex-grow: 1; }
   .karte .oeffnen {
     margin-top: 16px;
@@ -259,7 +314,15 @@
   <button data-rubrik="ki-videos">KI-Videos</button>
   <button data-rubrik="claude">Claude &amp; Werkzeuge</button>
   <button data-rubrik="recht">Recht &amp; Kennzeichnung</button>
+  <a class="direktlink" href="lernseiten/video-werkstatt.html">Video-Werkstatt <span class="mini">Intern</span></a>
+  <a class="direktlink" href="lernseiten/prompt-hub.html">Prompt-Hub <span class="mini">Intern</span></a>
 </nav>
+
+<div class="intern-hinweis">
+  <div class="intern-hinweis-innen">
+    <strong>Noch team-intern:</strong> Alles mit rotem „Intern"-Vermerk ist noch nicht für die Öffentlichkeit freigegeben und wird nach und nach freigeschaltet – bitte die Links noch nicht weitergeben.
+  </div>
+</div>
 
 <main>
   <div class="raster">
@@ -276,6 +339,27 @@
       <h3>Claude Code – Schritt für Schritt erklärt</h3>
       <p>Der Lern-Leitfaden zum Selbstlernen und Weitergeben: Was Claude Code ist, Installation in zwei Wegen, die erste Sitzung, ein Praxisbeispiel und Sicherheits-Tipps – in zehn Kapiteln mit abhakbarer Checkliste.</p>
       <span class="oeffnen">Leitfaden öffnen</span>
+    </a>
+
+    <a class="karte" href="lernseiten/ki-werkzeugkasten.html" data-rubriken="claude">
+      <span class="rubrik">Claude &amp; Werkzeuge</span>
+      <h3>Der KI-Werkzeugkasten: Alle Tools erklärt</h3>
+      <p>Skills, Routinen, Connectoren wie Apify und Composio, KI-Video mit Higgsfield, Stimmen aus Fish Audio, Veröffentlichen über GitHub, Netlify und Hostinger, dazu eigene Web-Apps: jedes Werkzeug in einfachen Worten erklärt – mit aufklappbarer Schritt-für-Schritt-Anleitung zum Einrichten.</p>
+      <span class="oeffnen">Werkzeugkasten öffnen</span>
+    </a>
+
+    <a class="karte" href="lernseiten/video-werkstatt.html" data-rubriken="ki-videos claude" data-intern>
+      <span style="display:flex;"><span class="rubrik" style="margin-bottom:0;">KI-Videos</span><span class="intern-band" style="margin-bottom:0;">Intern</span></span>
+      <h3 style="margin-top:14px;">Die Video-Werkstatt: Tools &amp; Ablauf</h3>
+      <p>Wie Claude, ffmpeg, HyperFrames und Metricool zusammen ein Video produzieren – von der Idee bis zur Veröffentlichung. Mit Steckbriefen aller Werkzeuge, Beispiel-Aufträgen und dem kompletten Produktionsablauf.</p>
+      <span class="oeffnen">Werkstatt öffnen</span>
+    </a>
+
+    <a class="karte" href="lernseiten/prompt-hub.html" data-rubriken="claude" data-intern>
+      <span style="display:flex;"><span class="rubrik" style="margin-bottom:0;">Claude &amp; Werkzeuge</span><span class="intern-band" style="margin-bottom:0;">Intern</span></span>
+      <h3 style="margin-top:14px;">Prompt-Bibliothek: gute Prompts sammeln</h3>
+      <p>Die Prompt-Hub-App im Browser: bewährte Prompts mit Beispielbildern ablegen, verschlagworten und per Klick kopieren. Jeder speichert seine Sammlung im eigenen Browser – Austausch über Export und Import.</p>
+      <span class="oeffnen">Prompt-Hub öffnen</span>
     </a>
 
     <a class="karte" href="lernseiten/checkliste-ki-kennzeichnung.html" data-rubriken="recht">

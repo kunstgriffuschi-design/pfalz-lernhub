@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Der KI-Werkzeugkasten: Alle Tools erklärt | Pfalz Digital Lern-Hub</title>
+<meta name="description" content="Apify, Composio, Higgsfield, Fish Audio, Routinen, Skills und eigene Web-Apps: Der KI-Werkzeugkasten rund um Claude – jedes Werkzeug erklärt, mit Schritt-für-Schritt-Anleitung. Stand August 2026.">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+  :root {
+    --pd-navy: #071A37;
+    --pd-rot: #DF241D;
+    --pd-gold: #E8C66F;
+    --pd-paper: #F8F4EA;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Hanken Grotesk', 'Segoe UI', system-ui, sans-serif;
+    background: var(--pd-paper);
+    color: var(--pd-navy);
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: 'Anton', 'Arial Narrow', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  header {
+    background: var(--pd-navy);
+    color: #fff;
+    padding: 44px 24px 38px;
+    text-align: center;
+  }
+  .marke {
+    color: var(--pd-gold);
+    font-family: 'Anton', 'Arial Narrow', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  header h1 { font-size: clamp(1.7rem, 4.5vw, 2.6rem); margin: 10px 0 12px; text-transform: uppercase; }
+  header .divider { width: 64px; height: 4px; background: var(--pd-rot); margin: 0 auto; }
+  header p { max-width: 640px; margin: 14px auto 0; color: #e8ebf1; font-size: 1.02rem; }
+
+  main { max-width: 860px; margin: 0 auto; padding: 34px 24px 56px; }
+  section { margin-bottom: 46px; }
+  h2 { font-size: 1.45rem; margin-bottom: 6px; }
+  h2::after { content: ""; display: block; width: 52px; height: 3px; background: var(--pd-rot); margin-top: 8px; }
+  section > p { margin-top: 14px; }
+
+  .kernsatz {
+    background: #fff;
+    border-left: 5px solid var(--pd-rot);
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 1.08rem;
+    box-shadow: 0 2px 8px rgba(7,26,55,0.06);
+  }
+
+  .werkzeuge {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+  }
+  @media (max-width: 480px) { .werkzeuge { grid-template-columns: 1fr; } }
+  .werkzeug {
+    background: #fff;
+    border: 1px solid #e2ddd0;
+    border-top: 4px solid var(--pd-rot);
+    padding: 20px 22px 18px;
+    box-shadow: 0 2px 8px rgba(7,26,55,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+  .werkzeug .etikett {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pd-navy);
+    background: var(--pd-gold);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+  .werkzeug h3 { font-size: 1.45rem; margin-bottom: 2px; text-transform: uppercase; }
+  .werkzeug .funktion {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--pd-rot);
+    margin-bottom: 10px;
+  }
+  .werkzeug p { font-size: 0.95rem; flex-grow: 1; }
+  .werkzeug .einsatz {
+    margin-top: 12px;
+    font-size: 0.92rem;
+    background: var(--pd-paper);
+    padding: 10px 14px;
+    border-left: 3px solid var(--pd-gold);
+  }
+  .werkzeug .einsatz strong { color: var(--pd-rot); }
+
+  details.sogehts {
+    margin-top: 12px;
+    background: #fff;
+    border: 1.5px dashed var(--pd-navy);
+  }
+  details.sogehts summary {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.93rem;
+    color: var(--pd-navy);
+    padding: 10px 14px;
+    list-style: none;
+  }
+  details.sogehts summary::-webkit-details-marker { display: none; }
+  details.sogehts summary::before { content: "▸ "; color: var(--pd-rot); }
+  details.sogehts[open] summary::before { content: "▾ "; }
+  details.sogehts ol {
+    margin: 0 14px 12px 32px;
+    font-size: 0.92rem;
+  }
+  details.sogehts li { margin-bottom: 7px; }
+  details.sogehts .merke {
+    margin: 0 14px 12px;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    background: var(--pd-paper);
+    border-left: 3px solid var(--pd-rot);
+  }
+  details.sogehts .merke strong { color: var(--pd-rot); }
+
+  .achtung {
+    background: var(--pd-navy);
+    color: #fff;
+    padding: 22px 26px;
+    margin-top: 18px;
+  }
+  .achtung strong { color: var(--pd-gold); }
+  .achtung a { color: var(--pd-gold); }
+
+  ul.check { list-style: none; margin-top: 16px; }
+  ul.check li {
+    background: #fff;
+    padding: 14px 18px 14px 48px;
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 0.98rem;
+    box-shadow: 0 2px 8px rgba(7,26,55,0.06);
+  }
+  ul.check li::before {
+    content: "";
+    position: absolute;
+    left: 16px; top: 17px;
+    width: 16px; height: 16px;
+    border: 2px solid var(--pd-rot);
+  }
+
+  .hinweis { font-size: 0.88rem; opacity: 0.75; margin-top: 20px; }
+
+  .cta {
+    background: var(--pd-navy);
+    color: #fff;
+    text-align: center;
+    padding: 32px 28px;
+  }
+  .cta h2 { color: #fff; }
+  .cta h2::after { margin-left: auto; margin-right: auto; }
+  .cta p { max-width: 560px; margin: 14px auto 0; color: #e8ebf1; }
+  .cta a.btn {
+    display: inline-block;
+    margin-top: 18px;
+    background: var(--pd-rot);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 28px;
+  }
+
+  .zurueck { display: inline-block; margin-bottom: 18px; color: var(--pd-rot); font-weight: 700; text-decoration: none; }
+  .zurueck::before { content: "← "; }
+  a.quer { color: var(--pd-rot); font-weight: 700; }
+
+  footer {
+    background: var(--pd-navy);
+    color: #cfd6e2;
+    font-size: 0.88rem;
+    text-align: center;
+    padding: 26px 24px;
+  }
+  footer a { color: var(--pd-gold); text-decoration: none; }
+  .ki-hinweis { margin-top: 8px; opacity: 0.7; font-size: 0.8rem; }
+
+  @media print {
+    header, footer, .cta, .zurueck { display: none; }
+    body { background: #fff; }
+    .werkzeug, ul.check li, .kernsatz { box-shadow: none; border: 1px solid #ccc; }
+    details.sogehts { border-style: solid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="marke">Pfalz Digital · Lern-Hub</div>
+  <h1>Der KI-Werkzeugkasten</h1>
+  <div class="divider"></div>
+  <p>Rund um Claude ist ein ganzer Werkzeugkasten entstanden: Programme, Dienste und Verbindungen, die zusammen Videos produzieren, Daten sammeln, Stimmen erzeugen und Abläufe automatisieren. Diese Seite erklärt jedes Werkzeug in einfachen Worten – und zeigt auf Klick, wie du es einrichtest.</p>
+</header>
+
+<main>
+  <a class="zurueck" href="../index.html">Zurück zum Lern-Hub</a>
+
+  <section>
+    <h2>Das Prinzip in einem Satz</h2>
+    <div class="kernsatz">
+      <strong>Du beschreibst, was du willst – Claude bedient die Werkzeuge.</strong>
+      Kein Tool auf dieser Seite musst du selbst im Detail beherrschen. Es reicht zu wissen, was jedes Werkzeug kann, damit du die richtige Aufgabe stellen kannst. Bei jedem Werkzeug findest du deshalb zwei Ebenen: <em>was es ist</em> – und unter „So geht's" die Schritte, <em>wie du es einrichtest</em>. Die Grundausstattung der Video-Produktion (Claude&nbsp;Code, ffmpeg, HyperFrames, Metricool) erklärt unsere Lernseite <em>„Die Video-Werkstatt"</em> – hier geht es um alles, was darüber hinaus dazugekommen ist.
+    </div>
+  </section>
+
+  <section>
+    <h2>Steuerzentrale: Claude clever einsetzen</h2>
+    <p>Diese Bausteine machen aus Claude mehr als ein Frage-Antwort-Programm: Es wird zum Mitarbeiter, der Abläufe kennt, selbstständig arbeitet und auch dann weitermacht, wenn du nicht am Rechner sitzt.</p>
+    <div class="werkzeuge">
+
+      <div class="werkzeug">
+        <span class="etikett">Arbeitsweise</span>
+        <h3>Skills</h3>
+        <div class="funktion">Einmal zeigen, dann läuft es allein</div>
+        <p>Ein Skill ist eine gespeicherte Arbeitsanleitung für Claude. Du führst einen Ablauf einmal vor – zum Beispiel „so baue ich einen Newsletter" – und Claude schreibt daraus eine Anleitung, die es künftig selbst befolgt. Beim nächsten Mal reicht ein Satz, und der komplette Ablauf läuft in gleichbleibender Qualität durch.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Wiederkehrende Arbeiten, die immer gleich ablaufen sollen – Berichte, Beiträge, Checklisten, Formatvorlagen.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Öffne Claude (Desktop-App oder Claude&nbsp;Code) und sag: <em>„Ich zeige dir jetzt einen Ablauf – erstelle daraus einen Skill."</em></li>
+            <li>Führe den Ablauf einmal vor oder beschreibe ihn Schritt für Schritt: welche Dateien, welche Reihenfolge, wie das fertige Ergebnis aussehen soll.</li>
+            <li>Claude legt den Skill als Anleitung ab. Gib ihm einen sprechenden Namen, etwa <em>newsletter-bauen</em>.</li>
+            <li>Testlauf in einem neuen Chat: <em>„Nutze den Skill newsletter-bauen."</em> Ergebnis prüfen – Korrekturen sagst du einmal, Claude schreibt sie in den Skill zurück.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Ein Skill ist im Kern eine Textdatei. Er wird besser, je öfter du Korrekturen einarbeiten lässt – wie ein Mitarbeiter, der dazulernt.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Automatisierung</span>
+        <h3>Routinen</h3>
+        <div class="funktion">Claude arbeitet nach Zeitplan</div>
+        <p>Eine Routine ist eine Aufgabe mit Terminplan: „Jeden Morgen um 7 Uhr fasse die wichtigsten Branchen-News zusammen" oder „Jeden Freitag prüfe die offenen Aufgaben". Claude startet dann von selbst – auch nachts oder am Wochenende – und legt dir das Ergebnis fertig hin.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Tägliche Zusammenfassungen, regelmäßige Kontrollen, wiederkehrende Content-Produktion.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Formuliere die Aufgabe so, dass sie ohne Rückfragen lösbar ist – die Routine läuft ja, wenn du nicht da bist.</li>
+            <li>Sag Claude im Chat: <em>„Richte eine Routine ein: jeden Werktag um 7 Uhr …"</em> – Claude legt den Zeitplan selbst an.</li>
+            <li>Lege fest, wo das Ergebnis landen soll: eine Notion-Seite, ein E-Mail-Entwurf, eine Datei.</li>
+            <li>Die ersten Läufe kontrollieren und nachjustieren – danach laufen lassen. Ändern oder pausieren geht jederzeit per Zuruf.</li>
+          </ol>
+          <div class="merke"><strong>Überlege vorher:</strong> Automatisiere nur, was du stichprobenartig prüfst. Eine Routine, deren Ergebnis niemand ansieht, produziert unbemerkt Fehler.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Arbeitsweise</span>
+        <h3>Chat-Übergabe</h3>
+        <div class="funktion">Wenn der Kontext voll ist</div>
+        <p>Jede Claude-Unterhaltung hat ein begrenztes „Gedächtnis" (den Kontext). Ist es voll, wird Claude langsamer und ungenauer. Die Lösung: Claude schreibt selbst eine Übergabe – eine Zusammenfassung des Stands – und ein neuer Chat macht damit nahtlos weiter. Wie eine Schichtübergabe im Betrieb.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Lange Projekte, die über viele Stunden oder Tage laufen.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Achte auf die Anzeichen: Antworten werden langsamer, Claude vergisst Abmachungen vom Anfang.</li>
+            <li>Sag: <em>„Schreibe eine Übergabe für einen neuen Chat: Ziel, aktueller Stand, getroffene Entscheidungen, Dateipfade, nächste Schritte."</em></li>
+            <li>Sichere die Übergabe außerhalb des Chats – in Notion oder als Datei. Nur im Chatverlauf ist sie schwer wiederzufinden.</li>
+            <li>Starte einen neuen Chat, füge die Übergabe als erste Nachricht ein und lass Claude den Stand kurz in eigenen Worten bestätigen.</li>
+          </ol>
+          <div class="merke"><strong>Überlege vorher:</strong> Getroffene Entscheidungen und bewusste „Das machen wir nicht"-Punkte gehören in die Übergabe – sonst diskutiert der neue Chat sie wieder neu.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Für Fortgeschrittene</span>
+        <h3>Claude-API</h3>
+        <div class="funktion">Eigene Werkzeuge bauen</div>
+        <p>Die API ist der „Maschinenanschluss" von Claude: Statt über die Chat-Oberfläche sprechen eigene Programme direkt mit dem KI-Modell. So entstehen eigene Werkzeuge und Produkte – etwa ein Sprachassistent („Jarvis"), der zuhört, antwortet und Aufgaben ausführt. Abgerechnet wird pro Nutzung, unabhängig vom Chat-Abo.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Eigene Apps und Kundenprodukte, in denen KI eingebaut ist – ohne dass der Nutzer je einen Chat sieht.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Lege ein Entwickler-Konto auf <em>console.anthropic.com</em> an – das ist getrennt vom Chat-Abo und hat ein eigenes Guthaben.</li>
+            <li>Erzeuge dort einen API-Schlüssel. Behandle ihn wie einen Haustürschlüssel: nirgends veröffentlichen, sicher ablegen (Passwort-Tresor).</li>
+            <li>Das Verbinden übernimmt Claude selbst: <em>„Baue mir ein kleines Programm, das über die API …"</em> – du lieferst nur den Schlüssel und die Idee.</li>
+            <li>Setze in der Konsole ein Monatslimit, damit die Kosten pro Nutzung nicht unbemerkt wachsen.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Die API lohnt sich erst, wenn Chat, Skills und Routinen nicht mehr reichen – etwa für ein Produkt, das Kunden ohne eigenes Claude-Konto nutzen sollen.</div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Video, Bild &amp; Stimme</h2>
+    <p>Die Erweiterung der Video-Werkstatt: Werkzeuge, mit denen aus einer Idee vollautomatisch fertige Erklärvideos, Produktbilder und Sprecherstimmen werden.</p>
+    <div class="werkzeuge">
+
+      <div class="werkzeug">
+        <span class="etikett">KI-Video</span>
+        <h3>Higgsfield</h3>
+        <div class="funktion">Erklärvideos vollautomatisch</div>
+        <p>Higgsfield ist eine KI-Plattform für Bilder, Videos und Ton aus Textbeschreibungen. In Kombination mit Claude entsteht daraus eine Produktionsstraße: Thema rein – fertiges Erklärvideo mit Bildern, Animation und Vertonung raus. Ganze Videoserien lassen sich so ohne Kamera und Schnittprogramm produzieren.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Erklärvideos, Social-Media-Clips und Videoserien in Serie – täglich, ohne Drehtag.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Konto auf <em>higgsfield.ai</em> anlegen. Bezahlt wird mit Credits – ein Paket kaufen und erst mit kleinen Tests verbrauchen.</li>
+            <li>In Claude unter <em>Einstellungen → Connectoren</em> den Higgsfield-Connector verbinden (einmalige Anmeldung mit dem Higgsfield-Konto).</li>
+            <li>Ab dann reicht ein Auftrag im Chat: <em>„Erstelle mit Higgsfield ein 30-Sekunden-Erklärvideo über … im Format 9:16."</em></li>
+            <li>Ergebnis prüfen, bei Bedarf nachbessern lassen – und vor dem Veröffentlichen als KI-Video kennzeichnen.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Je genauer die Beschreibung (Zielgruppe, Ton, Länge, Format), desto weniger Credits verbrennst du mit Fehlversuchen.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">KI-Stimme</span>
+        <h3>Fish Audio</h3>
+        <div class="funktion">Stimmen aus dem Baukasten</div>
+        <p>Fish Audio erzeugt natürliche Sprecherstimmen aus Text und kann Stimmen auch klonen – deutlich günstiger als viele bekannte Anbieter. Genau beim Klonen beginnt aber die rechtliche Grauzone: Eine echte Stimme darf nur mit ausdrücklicher Einwilligung der Person nachgebildet werden, und geklonte Stimmen sind kennzeichnungspflichtig.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Vertonung von Erklärvideos und Reels mit neutralen Baukasten-Stimmen. Stimm-Klone: nur mit schriftlicher Einwilligung.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Konto auf <em>fish.audio</em> anlegen und die Preisstufen ansehen – abgerechnet wird nach erzeugter Audio-Länge.</li>
+            <li>Im Konto einen API-Schlüssel erzeugen und Claude damit verbinden lassen: <em>„Verbinde Fish Audio, hier ist der Schlüssel."</em></li>
+            <li>Eine Stimme aus dem Katalog auswählen und einen kurzen Probetext vertonen lassen, bevor du längere Texte produzierst.</li>
+            <li>Für Stimm-Klone: schriftliche Einwilligung der Person einholen und aufbewahren – erst dann klonen, und das Ergebnis immer kennzeichnen.</li>
+          </ol>
+          <div class="merke"><strong>Achtung Grauzone:</strong> „Technisch möglich" heißt nicht „erlaubt". Ohne Einwilligung keine echte Stimme nachbilden – auch nicht die eigene von Kollegen „als Überraschung".</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">KI-Bild + Website</span>
+        <h3>Website + KI-Produktbilder</h3>
+        <div class="funktion">Ein Auftrag, ein kompletter Web-Auftritt</div>
+        <p>Ein Beispiel dafür, was die Werkzeuge im Zusammenspiel leisten: Aus einer einzigen ausführlichen Beschreibung baut Claude eine komplette Firmen-Website und erzeugt passende, professionell wirkende Produktbilder gleich mit. Was früher Wochen mit Agentur, Fotograf und Webdesigner dauerte, wird zum Auftrag von Stunden.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Schnelle Web-Auftritte und Produktdarstellungen – als Entwurf, Demo oder fertiges Kundenprojekt.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Sammle vorab alles in einem Dokument: Firma, Angebot, Zielgruppe, Farben und Logo, vorhandene Texte, gewünschte Seiten (Start, Angebot, Kontakt, Impressum).</li>
+            <li>Gib Claude einen einzigen, ausführlichen Auftrag: <em>„Baue aus diesen Unterlagen eine Website mit … Seiten im Stil …"</em> – lieber zu viel Kontext als zu wenig.</li>
+            <li>Für die Produktbilder: eigene Produktfotos mitgeben und beschreiben, wie sie wirken sollen (z.&nbsp;B. „auf hellem Holztisch, Tageslicht"). Claude erzeugt Varianten über das verbundene Bild-Werkzeug.</li>
+            <li>Vor der Freigabe prüfen: Stimmen alle Fakten und Preise? Impressum und Datenschutz vorhanden? KI-Bilder gekennzeichnet? Schriften lokal eingebunden (DSGVO)?</li>
+            <li>Veröffentlichen – zum Beispiel über einen Hosting-Dienst wie Netlify; auch das richtet Claude auf Zuruf ein.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Die Qualität des Ergebnisses hängt fast nur an Schritt 1. Eine Stunde Material sammeln spart drei Stunden Nachbessern.</div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Daten &amp; Verbindungen</h2>
+    <p>Connectoren sind Steckverbindungen zwischen Claude und anderen Diensten. Du findest sie in Claude unter <strong>Einstellungen → Connectoren</strong>: Dienst auswählen, einmal mit dem jeweiligen Konto anmelden – ab dann kann Claude dort lesen, schreiben und Aufgaben ausführen, ohne dass du zwischen Programmen hin- und herkopierst.</p>
+    <div class="werkzeuge">
+
+      <div class="werkzeug">
+        <span class="etikett">Connector</span>
+        <h3>Apify</h3>
+        <div class="funktion">Daten aus dem Netz einsammeln</div>
+        <p>Apify ist ein Dienst mit tausenden fertigen „Sammlern", die öffentliche Informationen von Websites einsammeln – Firmenverzeichnisse, Bewertungen, Branchendaten. Über den Connector beauftragt Claude so einen Sammler und wertet das Ergebnis direkt aus, oft für wenige Cent pro Durchlauf.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Marktrecherche und Kontaktlisten aus öffentlichen Quellen – aber: Beim Sammeln personenbezogener Daten gelten die DSGVO-Regeln, siehe unten.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Konto auf <em>apify.com</em> anlegen – es gibt ein kostenloses Startguthaben, danach zahlst du pro Durchlauf.</li>
+            <li>In Claude unter <em>Einstellungen → Connectoren</em> Apify verbinden.</li>
+            <li>Den Auftrag konkret stellen: <em>was</em> gesammelt werden soll, aus <em>welcher Quelle</em>, <em>welche Felder</em> (Name, Ort, Website …) und <em>wohin</em> das Ergebnis soll (z.&nbsp;B. Excel-Tabelle).</li>
+            <li>Ergebnis prüfen und bereinigen lassen – Dubletten raus, Felder vereinheitlichen.</li>
+          </ol>
+          <div class="merke"><strong>DSGVO:</strong> Öffentlich sichtbare Firmendaten sind okay – Listen mit personenbezogenen Daten brauchen eine Rechtsgrundlage. Im Zweifel nur Firmenkontakte sammeln.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Connector</span>
+        <h3>Composio</h3>
+        <div class="funktion">Ein Adapter für hunderte Dienste</div>
+        <p>Statt für jeden Dienst eine eigene Verbindung einzurichten, ist Composio ein Universal-Adapter: eine Anmeldung, dahinter hunderte Anbindungen – von Kalender über CRM bis Projektverwaltung. Praktisch, wenn ein Dienst keinen eigenen Claude-Connector hat.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Ein fehlendes Werkzeug anbinden, ohne technische Bastelei – erst prüfen, ob es einen direkten Connector gibt, der ist meist einfacher.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Zuerst prüfen: Gibt es den Dienst schon direkt unter <em>Einstellungen → Connectoren</em>? Dann den direkten Weg nehmen.</li>
+            <li>Wenn nicht: Konto auf <em>composio.dev</em> anlegen und dort den gewünschten Dienst freischalten (einmalige Anmeldung beim Zieldienst).</li>
+            <li>Composio selbst als Connector in Claude verbinden – damit stehen alle freigeschalteten Dienste auf einmal zur Verfügung.</li>
+            <li>Kurz testen: <em>„Lege über Composio einen Testeintrag in … an"</em> – und das Ergebnis im Zieldienst kontrollieren.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Ordnung</span>
+        <h3>Google Drive</h3>
+        <div class="funktion">Projektübersicht &amp; Backup</div>
+        <p>Claude kann eine Projektübersicht selbst pflegen und wichtige Arbeitsstände in der Cloud sichern. So liegt der aktuelle Stand nicht nur auf einem Rechner, und jedes Gerät kann weiterarbeiten. Dasselbe Prinzip funktioniert mit OneDrive genauso.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Automatische Sicherung von Projektdateien und ein stets aktueller „Wo stehen wir?"-Überblick.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Unter <em>Einstellungen → Connectoren</em> Google&nbsp;Drive (oder OneDrive) verbinden – einmalige Anmeldung mit dem Google-Konto.</li>
+            <li>Claude eine Projektübersicht anlegen lassen: <em>„Erstelle eine Übersichtsdatei mit allen laufenden Projekten und ihrem Stand."</em></li>
+            <li>Eine feste Regel vereinbaren, am besten als Routine: <em>„Aktualisiere die Übersicht am Ende jedes Arbeitstags und sichere die geänderten Dateien."</em></li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Ein Backup, das nur auf Zuruf passiert, passiert irgendwann nicht mehr – deshalb mit einer Routine koppeln.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Ordnung</span>
+        <h3>Rechner entrümpeln</h3>
+        <div class="funktion">Claude als Aufräum-Hilfe</div>
+        <p>Auch das geht: Claude analysiert, was den Rechner langsam macht – volle Festplatte, Autostart-Programme, doppelte Dateien – erklärt die Funde verständlich und räumt auf Zuruf auf. Wichtig: Löschen immer erst nach deiner Freigabe.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Der halbjährliche Frühjahrsputz für den Arbeitsrechner – ohne IT-Dienstleister.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Dafür brauchst du Claude&nbsp;Code auf dem Rechner – nur so hat Claude Zugriff auf Dateien und Programme.</li>
+            <li>Erster Auftrag bewusst nur lesend: <em>„Analysiere, was meinen Rechner langsam macht – nichts löschen, nur berichten."</em></li>
+            <li>Die Funde erklären lassen: Was ist das, warum belegt es Platz, was passiert, wenn es wegkommt?</li>
+            <li>Dann gezielt freigeben – Punkt für Punkt, nicht pauschal. Vorher ein Backup der wichtigen Daten.</li>
+          </ol>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Ablage &amp; Veröffentlichen</h2>
+    <p>Wenn Claude Websites und Web-Apps baut, stellen sich zwei Fragen: Wo liegt die Arbeit sicher – und wie kommt sie ins Netz? Die drei Werkzeuge hier greifen ineinander: <strong>GitHub</strong> bewahrt jeden Arbeitsstand auf, <strong>Netlify</strong> veröffentlicht direkt daraus, und <strong>Hostinger</strong> ist der klassische Weg für Websites mit eigener Domain.</p>
+    <div class="werkzeuge">
+
+      <div class="werkzeug">
+        <span class="etikett">Ablage</span>
+        <h3>GitHub</h3>
+        <div class="funktion">Das Gedächtnis für alles Gebaute</div>
+        <p>GitHub ist die Standard-Ablage für Code und Website-Dateien – mit eingebauter Zeitmaschine: Jeder gespeicherte Stand („Commit") bleibt für immer abrufbar. Geht etwas kaputt, holst du einfach den Stand von gestern zurück. Claude&nbsp;Code beherrscht GitHub von Haus aus – du musst keine Befehle lernen.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Sichere Ablage für jede Website und Web-App, die Claude baut – und die Startrampe für die automatische Veröffentlichung über Netlify.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Kostenloses Konto auf <em>github.com</em> anlegen.</li>
+            <li>In Claude&nbsp;Code sagen: <em>„Lege für dieses Projekt ein GitHub-Repository an und sichere den aktuellen Stand."</em> Ein Repository ist einfach der Projektordner auf GitHub.</li>
+            <li>Ab dann nach jedem Arbeitsschritt: <em>„Sichere den Stand auf GitHub"</em> – mit einem Satz Beschreibung, was sich geändert hat.</li>
+            <li>Alten Stand zurückholen bei Bedarf: <em>„Zeig mir, was sich seit gestern geändert hat"</em> oder <em>„Stelle den Stand von Montag wieder her."</em></li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> GitHub ersetzt kein Dokumenten-Backup (dafür ist die Cloud da) – es ist das Gedächtnis für alles, was aus Code besteht.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Veröffentlichen</span>
+        <h3>Netlify</h3>
+        <div class="funktion">Von GitHub live ins Netz – automatisch</div>
+        <p>Netlify nimmt die Dateien aus einem GitHub-Repository und macht daraus eine erreichbare Website – im Gratis-Plan inklusive Adresse wie <em>meinprojekt.netlify.app</em>. Das Beste: Einmal verbunden, geht jede Änderung, die du auf GitHub sicherst, von selbst live. Sichern und Veröffentlichen werden ein einziger Schritt.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Landingpages, Lernseiten, Demos und Web-Apps schnell und kostenlos online bringen – ohne klassischen Hosting-Vertrag.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Konto auf <em>netlify.com</em> anlegen – am einfachsten direkt „mit GitHub anmelden".</li>
+            <li>„Neues Projekt" wählen und das GitHub-Repository auswählen – bei einfachen Seiten ohne weitere Einstellungen bestätigen. Claude sagt dir, ob dein Projekt mehr braucht.</li>
+            <li>Netlify zeigt nach kurzer Zeit die fertige Adresse (<em>…netlify.app</em>). Auf Wunsch eigene Domain verbinden.</li>
+            <li>Ab jetzt gilt: Stand auf GitHub sichern = Seite ist aktualisiert. Kein Hochladen, kein FTP, kein Kopieren.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Vor dem Livegang einmal im privaten Browserfenster prüfen: Sieht die Seite so aus wie gedacht, laden keine Schriften von Google-Servern nach (DSGVO), stimmen Impressum und Datenschutz?</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Veröffentlichen</span>
+        <h3>Hostinger</h3>
+        <div class="funktion">Klassisches Hosting mit Domain &amp; WordPress</div>
+        <p>Hostinger ist ein klassischer Webhoster: Domain, Speicherplatz, E-Mail-Postfächer und WordPress aus einer Hand, gegen eine überschaubare Monatsgebühr. Der richtige Weg, wenn eine Website mehr sein soll als statische Seiten – etwa ein WordPress-Auftritt mit Blog, Shop oder Kundenlogin. Ähnliche Anbieter: IONOS, Strato, all-inkl.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Der offizielle Firmenauftritt mit eigener Domain und E-Mail-Adressen – oder Kundenprojekte, die auf WordPress laufen sollen.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Tarif auf <em>hostinger.de</em> wählen (für die meisten Firmen-Websites reicht der kleinste Webhosting-Tarif) und die Wunsch-Domain registrieren.</li>
+            <li>Entscheiden: WordPress installieren (im Hostinger-Menü mit wenigen Klicks) – oder von Claude gebaute Seiten hochladen. Beim Hochladen hilft der Dateimanager im Hostinger-Kundenbereich, und Claude erklärt dir jeden Schritt.</li>
+            <li>E-Mail-Postfächer zur Domain anlegen (z.&nbsp;B. <em>info@deine-firma.de</em>) – das ist bei Netlify &amp; Co. nicht dabei.</li>
+            <li>Auch hier gilt: Impressum, Datenschutz und lokal eingebundene Schriften prüfen, bevor die Seite beworben wird.</li>
+          </ol>
+          <div class="merke"><strong>Wann was?</strong> Schnelle Einzelseite oder Web-App → Netlify (gratis, automatisch). Firmenauftritt mit Domain, E-Mail und WordPress → klassischer Hoster wie Hostinger.</div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Eigene Web-Apps: fast alles ist nachbaubar</h2>
+    <p>Eine Web-App ist ein kleines Programm, das im Browser läuft – ohne Installation. Claude baut solche Apps aus einer Beschreibung, und die Beispiele zeigen die Bandbreite:</p>
+    <ul class="check">
+      <li><strong>Wissenstest:</strong> Aus deinen Unterlagen wird ein klickbares Quiz – etwa um nach einer Schulung zu prüfen, was hängen geblieben ist. Genau so etwas lässt sich als Abschluss-Test einer KI-Schulung einsetzen.</li>
+      <li><strong>Notiz- und Planungs-Apps:</strong> Eine digitale Pinnwand mit Haftnotizen, die sich auf Wunsch selbst weiter verbessert – jede neue Idee wird per Zuruf eingebaut.</li>
+      <li><strong>Bildbearbeitung im Browser:</strong> Zuschneiden, Helligkeit, Filter – die Grundfunktionen kommerzieller Programme sind als eigene, schlanke Web-App nachbaubar, zugeschnitten auf genau deinen Arbeitsablauf.</li>
+      <li><strong>Aufs Handy bringen:</strong> Jede dieser Web-Apps lässt sich am Handy „zum Startbildschirm hinzufügen" und fühlt sich dann an wie eine echte App – ohne App-Store, ohne Veröffentlichungsprozess.</li>
+    </ul>
+    <details class="sogehts" style="margin-top: 16px;">
+      <summary>So geht's – der Weg zur eigenen Web-App</summary>
+      <ol>
+        <li>Beschreibe die App in Alltagssprache: Was soll sie tun, welche Knöpfe braucht sie, was soll gespeichert bleiben?</li>
+        <li>Lass Claude die App als einzelne HTML-Datei bauen – die läuft per Doppelklick in jedem Browser, ganz ohne Installation.</li>
+        <li>Ausprobieren und in normalen Sätzen nachbessern: <em>„Der Knopf soll größer sein", „Speichere die Einträge dauerhaft."</em></li>
+        <li>Fürs Handy: Datei in eine Cloud legen oder veröffentlichen, Seite am Handy öffnen und im Browser-Menü <em>„Zum Startbildschirm hinzufügen"</em> wählen.</li>
+      </ol>
+      <div class="merke"><strong>Merke:</strong> Für viele kleine Alltagswerkzeuge braucht es kein gekauftes Programm mehr. Was du genau beschreiben kannst, kann Claude bauen – und danach beliebig anpassen.</div>
+    </details>
+  </section>
+
+  <section>
+    <h2>Bevor du loslegst: die Spielregeln</h2>
+    <div class="achtung">
+      <strong>Drei Regeln, die immer gelten:</strong>
+      <ol style="margin: 10px 0 0 20px;">
+        <li><strong>Kennzeichnen:</strong> KI-erzeugte Bilder, Videos und geklonte Stimmen müssen als solche erkennbar sein – die Details stehen in unserer <a href="checkliste-ki-kennzeichnung.html">Checkliste zur KI-Kennzeichnung</a>.</li>
+        <li><strong>Einwilligung:</strong> Echte Gesichter und echte Stimmen (auch von Mitarbeitern) nur mit schriftlicher Zustimmung nachbilden oder verwenden.</li>
+        <li><strong>Datenschutz:</strong> Beim automatischen Sammeln von Daten (etwa mit Apify) personenbezogene Daten nur DSGVO-konform verarbeiten – und keine vertraulichen Kunden-Daten in KI-Werkzeuge eingeben.</li>
+      </ol>
+    </div>
+    <p class="hinweis">Stand: August 2026. Diese Seite erklärt die Werkzeuge allgemein verständlich; Preise, Menüwege und Funktionsumfang der Anbieter ändern sich laufend.</p>
+  </section>
+
+  <section class="cta">
+    <h2>Werkzeuge kennen ist gut – sicher einsetzen ist besser.</h2>
+    <p>Artikel 4 der EU-KI-Verordnung verlangt von Unternehmen, die KI einsetzen, geschulte Mitarbeiter. Unsere KI-Kompetenzschulung vermittelt genau das: Werkzeuge, Spielregeln und Praxis – mit Übungen, Vorlagen und Teilnahmenachweis.</p>
+    <a class="btn" href="mailto:info@engelmann-promotion.de?subject=Anfrage%20KI-Kompetenzschulung">Schulung anfragen</a>
+  </section>
+</main>
+
+<footer>
+  <div>Pfalz Digital · <a href="https://www.pfalzdigital.de">www.pfalzdigital.de</a> · Ein Angebot von Engelmann Promotion</div>
+  <div class="ki-hinweis">Diese Seite wurde mit Unterstützung von KI erstellt und redaktionell geprüft.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ideenwerk Prompt-Hub</title>
+<style>
+  /* DSGVO-sicher: ausschließlich System-Schriften, keine externen Requests.
+     CI: Ideenwerk — Signalrot #E52106, Ink #1a1a1a, Slate, Inter/System-Stack */
+  :root {
+    --bg: #faf9f7;
+    --bg-soft: #f1efec;
+    --panel: #ffffff;
+    --panel-border: #e4e1dc;
+    --text: #1a1a1a;
+    --muted: #6e6a64;
+    --accent: #e52106;
+    --accent-dark: #b81a05;
+    --accent-soft: rgba(229, 33, 6, 0.08);
+    --accent-border: rgba(229, 33, 6, 0.35);
+    --chip-bg: #ffffff;
+    --code-bg: #f4f2ef;
+    --shadow: 0 2px 14px rgba(26, 26, 26, 0.07);
+    --ok: #1c7c46;
+    --radius: 14px;
+  }
+  html[data-theme="dark"] {
+    --bg: #161514;
+    --bg-soft: #1e1d1b;
+    --panel: #211f1e;
+    --panel-border: #3a3733;
+    --text: #f2f0ec;
+    --muted: #a39e96;
+    --accent: #ff3b1d;
+    --accent-dark: #e52106;
+    --accent-soft: rgba(255, 59, 29, 0.12);
+    --accent-border: rgba(255, 59, 29, 0.45);
+    --chip-bg: #262422;
+    --code-bg: #191817;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+    --ok: #4cc98a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Inter, "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+    padding-bottom: 80px;
+    transition: background 0.25s, color 0.25s;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  header { padding: 38px 0 8px; }
+  .header-row { display: flex; align-items: center; gap: 16px; }
+  .logo-badge {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--accent);
+    display: grid; place-items: center; font-size: 24px; color: #fff;
+    box-shadow: 0 4px 16px rgba(229, 33, 6, 0.35);
+    flex-shrink: 0;
+  }
+  h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.3px; }
+  h1 .brand { color: var(--accent); }
+  .tagline { color: var(--muted); margin-top: 4px; font-size: 15px; }
+  .theme-btn {
+    margin-left: auto; width: 46px; height: 46px; border-radius: 12px;
+    background: var(--panel); border: 1px solid var(--panel-border);
+    font-size: 20px; cursor: pointer; box-shadow: var(--shadow);
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 24px 0 14px; }
+  .search { flex: 1 1 260px; position: relative; }
+  .search input {
+    width: 100%; padding: 13px 16px 13px 44px;
+    background: var(--panel); border: 1.5px solid var(--panel-border);
+    border-radius: 11px; color: var(--text); font-size: 15px; outline: none;
+    box-shadow: var(--shadow);
+  }
+  .search input:focus { border-color: var(--accent); }
+  .search::before {
+    content: "🔍"; position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%); font-size: 15px; opacity: 0.65;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; font-size: 14.5px; }
+  .btn-primary {
+    padding: 13px 20px; border-radius: 11px; color: #fff; font-weight: 700;
+    background: var(--accent);
+    box-shadow: 0 4px 14px rgba(229, 33, 6, 0.35);
+  }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-ghost {
+    padding: 12px 16px; border-radius: 11px; color: var(--muted);
+    background: var(--panel); border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .chip {
+    padding: 8px 15px; border-radius: 999px; font-size: 13.5px;
+    background: var(--chip-bg); border: 1px solid var(--panel-border);
+    color: var(--muted); cursor: pointer; user-select: none;
+  }
+  .chip.active {
+    background: var(--accent-soft); border-color: var(--accent);
+    color: var(--accent); font-weight: 700;
+  }
+  .count { color: var(--muted); font-size: 13.5px; margin: 0 0 14px 2px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent-border); }
+  .card-img {
+    position: relative; width: 100%; height: 230px; background: var(--bg-soft);
+    cursor: zoom-in; display: block;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-img .cat-overlay { position: absolute; top: 12px; left: 12px; }
+  .card-body { padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .card h3 { font-size: 16.5px; font-weight: 700; flex: 1; line-height: 1.35; }
+  .desc { font-size: 13.5px; color: var(--accent); font-weight: 600; line-height: 1.4; margin-top: -3px; }
+  .fav-btn { background: none; font-size: 19px; opacity: 0.3; padding: 2px; filter: grayscale(1); }
+  .fav-btn.on { opacity: 1; filter: none; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cat {
+    font-size: 11.5px; padding: 4px 11px; border-radius: 999px; font-weight: 700;
+    background: var(--accent); color: #fff; letter-spacing: 0.2px;
+  }
+  .model-badge {
+    font-size: 11.5px; padding: 4px 10px; border-radius: 999px; font-weight: 600;
+    background: var(--accent-soft); color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  .tag {
+    font-size: 11.5px; padding: 4px 10px; border-radius: 999px;
+    background: var(--chip-bg); color: var(--muted);
+    border: 1px solid var(--panel-border);
+  }
+  .prompt-text {
+    font-size: 13.5px; color: var(--text); opacity: 0.85; line-height: 1.55;
+    background: var(--code-bg); border: 1px solid var(--panel-border);
+    border-radius: 10px; padding: 12px 14px;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden; white-space: pre-wrap; cursor: pointer;
+  }
+  .prompt-text.open { -webkit-line-clamp: unset; }
+  .note { font-size: 12.5px; color: var(--muted); }
+  .card-actions { display: flex; gap: 8px; margin-top: auto; }
+  .btn-copy {
+    flex: 1; padding: 10px; border-radius: 10px; font-weight: 700; color: #fff;
+    background: var(--accent);
+  }
+  .btn-copy:hover { background: var(--accent-dark); }
+  .btn-copy.copied { background: var(--ok); }
+  .icon-btn {
+    padding: 10px 12px; border-radius: 10px; background: var(--chip-bg);
+    border: 1px solid var(--panel-border); color: var(--muted);
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--accent); }
+  .icon-btn.del:hover { color: var(--accent); border-color: var(--accent); }
+
+  .empty {
+    text-align: center; color: var(--muted); padding: 70px 20px;
+    border: 1.5px dashed var(--panel-border); border-radius: var(--radius);
+  }
+  .empty .big { font-size: 40px; margin-bottom: 12px; }
+
+  /* Modal */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(15, 12, 10, 0.62);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 4vh 16px; z-index: 50; backdrop-filter: blur(4px);
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    width: 100%; max-width: 660px; background: var(--panel);
+    border: 1px solid var(--panel-border); border-radius: 16px; padding: 28px;
+    max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .modal h2 { font-size: 20px; margin-bottom: 20px; font-weight: 800; }
+  .field { margin-bottom: 15px; }
+  .field label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 12px 14px; border-radius: 10px; font-size: 14.5px;
+    background: var(--bg-soft); border: 1.5px solid var(--panel-border);
+    color: var(--text); outline: none; font-family: inherit;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
+  .field textarea { min-height: 160px; resize: vertical; line-height: 1.55; }
+  .img-drop {
+    border: 2px dashed var(--panel-border); border-radius: 12px; padding: 18px;
+    text-align: center; color: var(--muted); font-size: 13.5px; cursor: pointer;
+    background: var(--bg-soft);
+  }
+  .img-drop.drag { border-color: var(--accent); color: var(--accent); }
+  .img-preview { position: relative; margin-top: 10px; display: none; }
+  .img-preview img {
+    width: 100%; max-height: 260px; object-fit: contain; border-radius: 10px;
+    background: var(--code-bg); border: 1px solid var(--panel-border);
+  }
+  .img-remove {
+    position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.65);
+    color: #fff; border-radius: 8px; padding: 6px 12px; font-size: 12.5px;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(10, 8, 6, 0.9);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 80; padding: 20px; gap: 14px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: min(92vw, 900px); max-height: 78vh; border-radius: 12px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  }
+  .lightbox .lb-title { color: #fff; font-size: 16px; font-weight: 700; }
+  .lightbox .lb-actions { display: flex; gap: 10px; }
+
+  .toast {
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: var(--bg);
+    padding: 12px 22px; border-radius: 11px; font-size: 14.5px; opacity: 0;
+    transition: opacity 0.25s, transform 0.25s; pointer-events: none; z-index: 99;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); font-weight: 600;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { margin-top: 46px; color: var(--muted); font-size: 12.5px; text-align: center; }
+  footer .dot { color: var(--accent); }
+</style>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="header-row">
+        <div class="logo-badge">💡</div>
+        <div>
+          <h1><span class="brand">Ideenwerk</span> Prompt-Hub</h1>
+          <div class="tagline">Deine besten Prompts — mit Beispielbild, sofort kopierbar</div>
+        </div>
+        <button class="theme-btn" id="theme-btn" title="Hell/Dunkel umschalten">🌙</button>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <div class="search">
+        <input id="search" type="text" placeholder="Prompts durchsuchen (Titel, Text, Tags, Modell)…" />
+      </div>
+      <button class="btn-ghost" id="btn-export" title="Alle Prompts inkl. Bilder als Datei sichern">⬇ Export</button>
+      <button class="btn-ghost" id="btn-import" title="Prompts aus Backup-Datei laden">⬆ Import</button>
+      <input type="file" id="import-file" accept=".json" hidden />
+      <button class="btn-primary" id="btn-new">+ Neuer Prompt</button>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>
+      <div class="big">📭</div>
+      <div>Keine Prompts gefunden.<br />Leg mit „+ Neuer Prompt" deinen ersten an!</div>
+    </div>
+
+    <footer>Ideenwerk Prompt-Hub <span class="dot">·</span> lokale App, deine Daten bleiben auf diesem Rechner <span class="dot">·</span> Backup über „Export"</footer>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h2 id="modal-title">Neuer Prompt</h2>
+      <div class="field">
+        <label for="f-title">Titel</label>
+        <input id="f-title" type="text" placeholder="z.B. Produktfoto Weinflasche im Abendlicht" />
+      </div>
+      <div class="field">
+        <label for="f-desc">Worum geht's? (kurz, wird auf der Karte angezeigt)</label>
+        <input id="f-desc" type="text" placeholder="z.B. Eingefrorene Action: Bewegung mitten im Sprung einfrieren" />
+      </div>
+      <div class="field">
+        <label for="f-cat">Kategorie</label>
+        <select id="f-cat"></select>
+      </div>
+      <div class="field">
+        <label for="f-model">Modell / Tool (optional)</label>
+        <input id="f-model" type="text" placeholder="z.B. ChatGPT, Nano Banana Pro, Higgsfield, Claude" />
+      </div>
+      <div class="field">
+        <label for="f-tags">Tags (mit Komma getrennt)</label>
+        <input id="f-tags" type="text" placeholder="z.B. 9:16, golden hour, Portrait" />
+      </div>
+      <div class="field">
+        <label for="f-text">Prompt-Text</label>
+        <textarea id="f-text" placeholder="Den kompletten Prompt hier einfügen…"></textarea>
+      </div>
+      <div class="field">
+        <label>Beispielbild (optional)</label>
+        <div class="img-drop" id="img-drop">
+          📷 Bild hierher ziehen, klicken zum Auswählen —<br />oder einfach mit Strg+V einfügen
+        </div>
+        <input type="file" id="img-file" accept="image/*" hidden />
+        <div class="img-preview" id="img-preview">
+          <img id="img-preview-img" alt="Vorschau" />
+          <button class="img-remove" id="img-remove">✕ Bild entfernen</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-note">Notiz (optional — z.B. wofür er gut funktioniert)</label>
+        <input id="f-note" type="text" placeholder="z.B. funktioniert super mit Referenzbild" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="btn-cancel">Abbrechen</button>
+        <button class="btn-primary" id="btn-save">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lb-title" id="lb-title"></div>
+    <img id="lb-img" alt="" />
+    <div class="lb-actions">
+      <button class="btn-primary" id="lb-download">⬇ Bild herunterladen</button>
+      <button class="btn-ghost" id="lb-close">Schließen</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+  const LS_KEY = "prompt-hub-data-v1";
+  const THEME_KEY = "prompt-hub-theme";
+  const CATEGORIES = ["Bild", "Video", "Reels", "Text", "Social Media", "E-Mail", "Business", "Sonstiges"];
+  const SEED = [
+    {
+      id: "seed-1",
+      title: "Beispiel: Produktfoto im Abendlicht",
+      cat: "Bild",
+      model: "Nano Banana Pro",
+      tags: ["Beispiel", "Fotografie"],
+      text: "Fotorealistisches Produktfoto einer [PRODUKT] auf rustikalem Holztisch, goldenes Abendlicht von links, weiches Bokeh im Hintergrund, 85mm, f/2.0, dezente Requisiten passend zur Marke.",
+      note: "Platzhalter in eckigen Klammern ersetzen. Kann gelöscht werden — nur ein Beispiel.",
+      fav: false,
+      created: 1755028800000
+    },
+    {
+      id: "seed-2",
+      title: "Beispiel: Reel-Hook in 3 Varianten",
+      cat: "Social Media",
+      model: "Claude",
+      tags: ["Beispiel", "Reels"],
+      text: "Schreibe 3 verschiedene Hooks (max. 8 Wörter) für ein Instagram-Reel zum Thema [THEMA]. Zielgruppe: [ZIELGRUPPE]. Ton: neugierig machend, kein Clickbait, deutsch.",
+      note: "Kann gelöscht werden — nur ein Beispiel.",
+      fav: false,
+      created: 1755028800001
+    }
+  ];
+
+  // ---------- IndexedDB für Bilder ----------
+  let dbPromise = null;
+  function openDB() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+      const req = indexedDB.open("prompt-hub", 1);
+      req.onupgradeneeded = () => req.result.createObjectStore("images");
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+    return dbPromise;
+  }
+  function idbPut(id, dataUrl) {
+    return openDB().then((db) => new Promise((res, rej) => {
+      const tx = db.transaction("images", "readwrite");
+      tx.objectStore("images").put(dataUrl, id);
+      tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+    }));
+  }
+  function idbGet(id) {
+    return openDB().then((db) => new Promise((res, rej) => {
+      const req = db.transaction("images").objectStore("images").get(id);
+      req.onsuccess = () => res(req.result || null);
+      req.onerror = () => rej(req.error);
+    }));
+  }
+  function idbDel(id) {
+    return openDB().then((db) => new Promise((res, rej) => {
+      const tx = db.transaction("images", "readwrite");
+      tx.objectStore("images").delete(id);
+      tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+    }));
+  }
+
+  // ---------- Daten ----------
+  let data = load();
+  let activeCat = "Alle";
+  let onlyFav = false;
+  let editId = null;
+  let pendingImg = null;     // dataURL für den Modal-Entwurf
+  let pendingImgRemoved = false;
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        const arr = JSON.parse(raw);
+        arr.forEach((p) => {
+          if (p.model === undefined) p.model = "";
+          if (p.hasImg === undefined) p.hasImg = false;
+          if (p.desc === undefined) p.desc = "";
+        });
+        return arr;
+      }
+    } catch (e) { /* zerstörte Daten -> Neustart mit Seed */ }
+    return SEED.map((s) => ({ ...s, hasImg: false }));
+  }
+  function save() { localStorage.setItem(LS_KEY, JSON.stringify(data)); }
+  function uid() { return "p-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[c]);
+  }
+  function slug(s) {
+    return String(s).toLowerCase().replace(/[äöüß]/g, (c) => ({ ä: "ae", ö: "oe", ü: "ue", ß: "ss" })[c])
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "prompt";
+  }
+
+  // ---------- Theme ----------
+  const themeBtn = document.getElementById("theme-btn");
+  function applyTheme(t) {
+    document.documentElement.dataset.theme = t;
+    themeBtn.textContent = t === "dark" ? "☀️" : "🌙";
+    localStorage.setItem(THEME_KEY, t);
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+  themeBtn.addEventListener("click", () =>
+    applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
+
+  // ---------- Chips ----------
+  const chipsEl = document.getElementById("chips");
+  function renderChips() {
+    const cats = ["Alle", ...CATEGORIES];
+    chipsEl.innerHTML =
+      cats.map((c) =>
+        `<span class="chip ${!onlyFav && activeCat === c ? "active" : ""}" data-cat="${esc(c)}">${esc(c)}</span>`
+      ).join("") +
+      `<span class="chip ${onlyFav ? "active" : ""}" data-fav="1">⭐ Favoriten</span>`;
+  }
+  chipsEl.addEventListener("click", (e) => {
+    const el = e.target.closest(".chip");
+    if (!el) return;
+    if (el.dataset.fav) { onlyFav = !onlyFav; }
+    else { activeCat = el.dataset.cat; onlyFav = false; }
+    renderAll();
+  });
+
+  // ---------- Grid ----------
+  const gridEl = document.getElementById("grid");
+  const emptyEl = document.getElementById("empty");
+  const countEl = document.getElementById("count");
+  const searchEl = document.getElementById("search");
+
+  function visible() {
+    const q = searchEl.value.trim().toLowerCase();
+    return data
+      .filter((p) => (onlyFav ? p.fav : activeCat === "Alle" || p.cat === activeCat))
+      .filter((p) => {
+        if (!q) return true;
+        return (
+          p.title.toLowerCase().includes(q) ||
+          p.text.toLowerCase().includes(q) ||
+          (p.desc || "").toLowerCase().includes(q) ||
+          (p.model || "").toLowerCase().includes(q) ||
+          (p.note || "").toLowerCase().includes(q) ||
+          (p.tags || []).some((t) => t.toLowerCase().includes(q))
+        );
+      })
+      .sort((a, b) => (b.fav - a.fav) || (b.created - a.created));
+  }
+
+  function renderGrid() {
+    const list = visible();
+    countEl.textContent = `${list.length} Prompt${list.length === 1 ? "" : "s"}` +
+      (data.length !== list.length ? ` (von ${data.length})` : "");
+    emptyEl.hidden = list.length > 0;
+    gridEl.innerHTML = list.map((p) => `
+      <div class="card" data-id="${p.id}">
+        ${p.hasImg ? `
+        <div class="card-img" data-act="view" title="Bild ansehen">
+          <img data-imgid="${p.id}" alt="" loading="lazy" />
+          <span class="cat-overlay"><span class="cat">${esc(p.cat)}</span></span>
+        </div>` : ""}
+        <div class="card-body">
+          <div class="card-top">
+            <h3>${esc(p.title)}</h3>
+            <button class="fav-btn ${p.fav ? "on" : ""}" data-act="fav" title="Favorit">⭐</button>
+          </div>
+          ${p.desc ? `<div class="desc">${esc(p.desc)}</div>` : ""}
+          <div class="meta">
+            ${p.hasImg ? "" : `<span class="cat">${esc(p.cat)}</span>`}
+            ${p.model ? `<span class="model-badge">${esc(p.model)}</span>` : ""}
+            ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
+          </div>
+          <div class="prompt-text" data-act="toggle" title="Klick zum Auf-/Zuklappen">${esc(p.text)}</div>
+          ${p.note ? `<div class="note">💡 ${esc(p.note)}</div>` : ""}
+          <div class="card-actions">
+            <button class="btn-copy" data-act="copy">📋 Kopieren</button>
+            <button class="icon-btn" data-act="edit" title="Bearbeiten">✏️</button>
+            <button class="icon-btn del" data-act="del" title="Löschen">🗑</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+    // Bilder asynchron aus IndexedDB nachladen
+    gridEl.querySelectorAll("img[data-imgid]").forEach((img) => {
+      idbGet(img.dataset.imgid).then((url) => { if (url) img.src = url; });
+    });
+  }
+
+  gridEl.addEventListener("click", (e) => {
+    const actEl = e.target.closest("[data-act]");
+    if (!actEl) return;
+    const card = e.target.closest(".card");
+    const p = data.find((x) => x.id === card.dataset.id);
+    if (!p) return;
+    const act = actEl.dataset.act;
+    if (act === "toggle") actEl.classList.toggle("open");
+    if (act === "fav") { p.fav = !p.fav; save(); renderGrid(); }
+    if (act === "copy") copyText(p.text, actEl);
+    if (act === "edit") openModal(p);
+    if (act === "view") openLightbox(p);
+    if (act === "del") {
+      if (confirm(`„${p.title}" wirklich löschen?`)) {
+        data = data.filter((x) => x.id !== p.id);
+        idbDel(p.id);
+        save(); renderAll();
+      }
+    }
+  });
+
+  function copyText(text, btn) {
+    const done = () => {
+      btn.classList.add("copied");
+      btn.textContent = "✓ Kopiert!";
+      toast("Prompt in die Zwischenablage kopiert");
+      setTimeout(() => { btn.classList.remove("copied"); btn.textContent = "📋 Kopieren"; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else { fallbackCopy(text, done); }
+  }
+  function fallbackCopy(text, done) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { toast("Kopieren fehlgeschlagen"); }
+    document.body.removeChild(ta);
+  }
+
+  // ---------- Lightbox ----------
+  const lightbox = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lb-img");
+  const lbTitle = document.getElementById("lb-title");
+  let lbCurrent = null;
+  function openLightbox(p) {
+    idbGet(p.id).then((url) => {
+      if (!url) return;
+      lbCurrent = p;
+      lbImg.src = url;
+      lbTitle.textContent = p.title;
+      lightbox.classList.add("open");
+    });
+  }
+  document.getElementById("lb-close").addEventListener("click", () => lightbox.classList.remove("open"));
+  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) lightbox.classList.remove("open"); });
+  document.getElementById("lb-download").addEventListener("click", () => {
+    if (!lbCurrent) return;
+    const a = document.createElement("a");
+    a.href = lbImg.src;
+    a.download = slug(lbCurrent.title) + ".jpg";
+    a.click();
+    toast("Bild heruntergeladen");
+  });
+
+  // ---------- Modal ----------
+  const overlay = document.getElementById("overlay");
+  const fTitle = document.getElementById("f-title");
+  const fDesc = document.getElementById("f-desc");
+  const fCat = document.getElementById("f-cat");
+  const fModel = document.getElementById("f-model");
+  const fTags = document.getElementById("f-tags");
+  const fText = document.getElementById("f-text");
+  const fNote = document.getElementById("f-note");
+  fCat.innerHTML = CATEGORIES.map((c) => `<option>${esc(c)}</option>`).join("");
+
+  const imgDrop = document.getElementById("img-drop");
+  const imgFile = document.getElementById("img-file");
+  const imgPreview = document.getElementById("img-preview");
+  const imgPreviewImg = document.getElementById("img-preview-img");
+
+  function setPendingImg(dataUrl) {
+    pendingImg = dataUrl;
+    pendingImgRemoved = false;
+    if (dataUrl) {
+      imgPreviewImg.src = dataUrl;
+      imgPreview.style.display = "block";
+      imgDrop.style.display = "none";
+    } else {
+      imgPreview.style.display = "none";
+      imgDrop.style.display = "block";
+    }
+  }
+  function compressImage(fileOrBlob) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(fileOrBlob);
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1400;
+        let { width: w, height: h } = img;
+        if (Math.max(w, h) > MAX) {
+          const f = MAX / Math.max(w, h);
+          w = Math.round(w * f); h = Math.round(h * f);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL("image/jpeg", 0.87));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
+      img.src = url;
+    });
+  }
+  function handleImageInput(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    compressImage(file)
+      .then(setPendingImg)
+      .catch(() => toast("Bild konnte nicht gelesen werden"));
+  }
+  imgDrop.addEventListener("click", () => imgFile.click());
+  imgFile.addEventListener("change", () => { handleImageInput(imgFile.files[0]); imgFile.value = ""; });
+  imgDrop.addEventListener("dragover", (e) => { e.preventDefault(); imgDrop.classList.add("drag"); });
+  imgDrop.addEventListener("dragleave", () => imgDrop.classList.remove("drag"));
+  imgDrop.addEventListener("drop", (e) => {
+    e.preventDefault(); imgDrop.classList.remove("drag");
+    handleImageInput(e.dataTransfer.files[0]);
+  });
+  document.addEventListener("paste", (e) => {
+    if (!overlay.classList.contains("open")) return;
+    const item = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith("image/"));
+    if (item) { handleImageInput(item.getAsFile()); e.preventDefault(); }
+  });
+  document.getElementById("img-remove").addEventListener("click", () => {
+    pendingImg = null; pendingImgRemoved = true;
+    imgPreview.style.display = "none"; imgDrop.style.display = "block";
+  });
+
+  function openModal(p) {
+    editId = p ? p.id : null;
+    document.getElementById("modal-title").textContent = p ? "Prompt bearbeiten" : "Neuer Prompt";
+    fTitle.value = p ? p.title : "";
+    fDesc.value = p ? (p.desc || "") : "";
+    fCat.value = p ? p.cat : CATEGORIES[0];
+    fModel.value = p ? (p.model || "") : "";
+    fTags.value = p ? (p.tags || []).join(", ") : "";
+    fText.value = p ? p.text : "";
+    fNote.value = p ? (p.note || "") : "";
+    setPendingImg(null);
+    pendingImgRemoved = false;
+    if (p && p.hasImg) idbGet(p.id).then((url) => { if (url && editId === p.id) setPendingImg(url); });
+    overlay.classList.add("open");
+    fTitle.focus();
+  }
+  function closeModal() { overlay.classList.remove("open"); editId = null; pendingImg = null; }
+  document.getElementById("btn-new").addEventListener("click", () => openModal(null));
+  document.getElementById("btn-cancel").addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeModal(); lightbox.classList.remove("open"); }
+  });
+
+  document.getElementById("btn-save").addEventListener("click", () => {
+    const title = fTitle.value.trim();
+    const text = fText.value.trim();
+    if (!title || !text) { toast("Titel und Prompt-Text sind Pflicht"); return; }
+    const tags = fTags.value.split(",").map((t) => t.trim()).filter(Boolean);
+    let p;
+    if (editId) {
+      p = data.find((x) => x.id === editId);
+      Object.assign(p, { title, desc: fDesc.value.trim(), cat: fCat.value,
+        model: fModel.value.trim(), tags, text, note: fNote.value.trim() });
+    } else {
+      p = { id: uid(), title, desc: fDesc.value.trim(), cat: fCat.value,
+            model: fModel.value.trim(), tags, text,
+            note: fNote.value.trim(), fav: false, created: Date.now(), hasImg: false };
+      data.unshift(p);
+    }
+    const finish = () => { save(); closeModal(); renderAll(); toast("Prompt gespeichert"); };
+    if (pendingImg) {
+      p.hasImg = true;
+      idbPut(p.id, pendingImg).then(finish).catch(() => { toast("Bild konnte nicht gespeichert werden"); finish(); });
+    } else if (pendingImgRemoved && p.hasImg) {
+      p.hasImg = false;
+      idbDel(p.id).then(finish).catch(finish);
+    } else {
+      finish();
+    }
+  });
+
+  // ---------- Export / Import ----------
+  document.getElementById("btn-export").addEventListener("click", () => {
+    const withImgs = data.filter((p) => p.hasImg);
+    Promise.all(withImgs.map((p) => idbGet(p.id).then((url) => [p.id, url])))
+      .then((pairs) => {
+        const images = {};
+        pairs.forEach(([id, url]) => { if (url) images[id] = url; });
+        const blob = new Blob(
+          [JSON.stringify({ version: 2, prompts: data, images }, null, 2)],
+          { type: "application/json" }
+        );
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `prompt-hub-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        toast("Backup-Datei erstellt (inkl. Bilder)");
+      });
+  });
+  const importFile = document.getElementById("import-file");
+  document.getElementById("btn-import").addEventListener("click", () => importFile.click());
+  importFile.addEventListener("change", () => {
+    const file = importFile.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const raw = JSON.parse(reader.result);
+        const incoming = Array.isArray(raw) ? raw : (raw.prompts || []);
+        const images = Array.isArray(raw) ? {} : (raw.images || {});
+        let added = 0;
+        const imgWrites = [];
+        incoming.forEach((p) => {
+          if (p && p.title && p.text && !data.some((x) => x.id === p.id)) {
+            const np = {
+              id: p.id || uid(), title: p.title,
+              desc: p.desc || "",
+              cat: CATEGORIES.includes(p.cat) ? p.cat : "Sonstiges",
+              model: p.model || "",
+              tags: Array.isArray(p.tags) ? p.tags : [], text: p.text,
+              note: p.note || "", fav: !!p.fav, created: p.created || Date.now(),
+              hasImg: false
+            };
+            if (images[p.id]) {
+              np.hasImg = true;
+              imgWrites.push(idbPut(np.id, images[p.id]));
+            }
+            data.push(np);
+            added++;
+          }
+        });
+        Promise.all(imgWrites).then(() => {
+          save(); renderAll();
+          toast(`${added} Prompt${added === 1 ? "" : "s"} importiert`);
+        });
+      } catch (e) {
+        toast("Import fehlgeschlagen — keine gültige Backup-Datei");
+      }
+      importFile.value = "";
+    };
+    reader.readAsText(file);
+  });
+
+  // ---------- Toast ----------
+  let toastTimer = null;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  searchEl.addEventListener("input", renderGrid);
+  function renderAll() { renderChips(); renderGrid(); }
+  renderAll();
+})();
+</script>
+</body>
+</html>
