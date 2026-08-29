@@ -1,7 +1,6 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
 <head>
-<meta name="robots" content="noindex">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ideenwerk Prompt-Hub</title>
@@ -125,7 +124,39 @@
   }
   .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .card-img .cat-overlay { position: absolute; top: 12px; left: 12px; }
+  .img-count {
+    position: absolute; bottom: 10px; right: 10px;
+    background: rgba(0, 0, 0, 0.62); color: #fff; font-size: 11.5px; font-weight: 700;
+    padding: 4px 10px; border-radius: 999px;
+  }
   .card-body { padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+
+  /* Ausklappbereiche: Frames → Anleitung → fertiges Reel */
+  details.sec {
+    border: 1px solid var(--panel-border); border-radius: 10px;
+    background: var(--bg-soft); overflow: hidden;
+  }
+  details.sec summary {
+    list-style: none; cursor: pointer; padding: 10px 14px;
+    font-size: 13.5px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px; user-select: none;
+  }
+  details.sec summary::-webkit-details-marker { display: none; }
+  details.sec summary::before { content: "▸"; color: var(--accent); transition: transform 0.15s; }
+  details.sec[open] summary::before { transform: rotate(90deg); }
+  details.sec .sec-body { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .thumbs img {
+    width: 100%; height: 120px; object-fit: cover; cursor: zoom-in; display: block;
+    border-radius: 8px; border: 1px solid var(--panel-border); background: var(--code-bg);
+  }
+  .card-video { width: 100%; max-height: 420px; border-radius: 10px; background: #000; display: block; }
+  .btn-link {
+    display: block; text-align: center; padding: 10px; border-radius: 10px;
+    font-weight: 700; font-size: 14px; color: #fff; background: var(--accent);
+    text-decoration: none;
+  }
+  .btn-link:hover { background: var(--accent-dark); }
   .card-top { display: flex; align-items: flex-start; gap: 10px; }
   .card h3 { font-size: 16.5px; font-weight: 700; flex: 1; line-height: 1.35; }
   .desc { font-size: 13.5px; color: var(--accent); font-weight: 600; line-height: 1.4; margin-top: -3px; }
@@ -141,6 +172,8 @@
     background: var(--accent-soft); color: var(--accent);
     border: 1px solid var(--accent-border);
   }
+  a.model-badge.ideenwerk { text-decoration: none; font-weight: 700; }
+  a.model-badge.ideenwerk:hover { background: var(--accent); color: #fff; }
   .tag {
     font-size: 11.5px; padding: 4px 10px; border-radius: 999px;
     background: var(--chip-bg); color: var(--muted);
@@ -203,10 +236,21 @@
     background: var(--bg-soft);
   }
   .img-drop.drag { border-color: var(--accent); color: var(--accent); }
-  .img-preview { position: relative; margin-top: 10px; display: none; }
-  .img-preview img {
-    width: 100%; max-height: 260px; object-fit: contain; border-radius: 10px;
+  .img-thumbs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .img-thumb { position: relative; width: 92px; }
+  .img-thumb img {
+    width: 92px; height: 92px; object-fit: cover; border-radius: 8px; display: block;
     background: var(--code-bg); border: 1px solid var(--panel-border);
+  }
+  .img-thumb .thumb-remove {
+    position: absolute; top: -7px; right: -7px; width: 24px; height: 24px;
+    background: var(--accent); color: #fff; border-radius: 50%;
+    font-size: 12px; line-height: 1; font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .vid-preview { position: relative; margin-top: 10px; display: none; }
+  .vid-preview video {
+    width: 100%; max-height: 300px; border-radius: 10px; background: #000; display: block;
   }
   .img-remove {
     position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.65);
@@ -227,6 +271,14 @@
   }
   .lightbox .lb-title { color: #fff; font-size: 16px; font-weight: 700; }
   .lightbox .lb-actions { display: flex; gap: 10px; }
+  .lb-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.14); color: #fff;
+    font-size: 26px; padding: 14px 17px; border-radius: 12px;
+  }
+  .lb-arrow:hover { background: rgba(255, 255, 255, 0.28); }
+  .lb-arrow.prev { left: 18px; }
+  .lb-arrow.next { right: 18px; }
 
   .toast {
     position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -239,8 +291,21 @@
 
   footer { margin-top: 46px; color: var(--muted); font-size: 12.5px; text-align: center; }
   footer .dot { color: var(--accent); }
+  .footer-promo {
+    display: inline-block; margin-top: 12px; padding: 9px 18px; border-radius: 999px;
+    color: var(--accent); font-weight: 700; font-size: 13px; text-decoration: none;
+    background: var(--accent-soft); border: 1px solid var(--accent-border);
+  }
+  .footer-promo:hover { background: var(--accent); color: #fff; }
 </style>
 
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_dlc_DocId msdt:dt="string">PDID-689366917-19000</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">691b0ffd-5ace-4f10-8baf-ebb7f1455743</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">https://kunstgriff.sharepoint.com/sites/PfalzDigital/_layouts/15/DocIdRedir.aspx?ID=PDID-689366917-19000, PDID-689366917-19000</mso:_dlc_DocIdUrl>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
 </head>
 <body>
   <div class="wrap">
@@ -273,7 +338,10 @@
       <div>Keine Prompts gefunden.<br />Leg mit „+ Neuer Prompt" deinen ersten an!</div>
     </div>
 
-    <footer>Ideenwerk Prompt-Hub <span class="dot">·</span> lokale App, deine Daten bleiben auf diesem Rechner <span class="dot">·</span> Backup über „Export"</footer>
+    <footer>
+      Ideenwerk Prompt-Hub <span class="dot">·</span> lokale App, deine Daten bleiben auf diesem Rechner <span class="dot">·</span> Backup über „Export"<br />
+      <a class="footer-promo" href="https://ideenwerk.engelmann-promotion.de" target="_blank" rel="noopener">💡 Ideenwerk — die App für deine Content-Woche</a>
+    </footer>
   </div>
 
   <div class="overlay" id="overlay">
@@ -304,15 +372,27 @@
         <textarea id="f-text" placeholder="Den kompletten Prompt hier einfügen…"></textarea>
       </div>
       <div class="field">
-        <label>Beispielbild (optional)</label>
+        <label>Bilder / Frames (optional — mehrere möglich)</label>
         <div class="img-drop" id="img-drop">
-          📷 Bild hierher ziehen, klicken zum Auswählen —<br />oder einfach mit Strg+V einfügen
+          📷 Bilder hierher ziehen, klicken zum Auswählen —<br />oder einfach mit Strg+V einfügen
         </div>
-        <input type="file" id="img-file" accept="image/*" hidden />
-        <div class="img-preview" id="img-preview">
-          <img id="img-preview-img" alt="Vorschau" />
-          <button class="img-remove" id="img-remove">✕ Bild entfernen</button>
+        <input type="file" id="img-file" accept="image/*" multiple hidden />
+        <div class="img-thumbs" id="img-thumbs"></div>
+      </div>
+      <div class="field">
+        <label>Fertiges Reel / Video (optional)</label>
+        <div class="img-drop" id="vid-drop">
+          🎬 Video hierher ziehen oder klicken zum Auswählen (z.B. MP4)
         </div>
+        <input type="file" id="vid-file" accept="video/*" hidden />
+        <div class="vid-preview" id="vid-preview">
+          <video id="vid-preview-video" controls preload="metadata"></video>
+          <button class="img-remove" id="vid-remove">✕ Video entfernen</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-vurl">Video-Link (optional — z.B. YouTube „nicht gelistet")</label>
+        <input id="f-vurl" type="url" placeholder="https://youtu.be/…" />
       </div>
       <div class="field">
         <label for="f-note">Notiz (optional — z.B. wofür er gut funktioniert)</label>
@@ -328,6 +408,8 @@
   <div class="lightbox" id="lightbox">
     <div class="lb-title" id="lb-title"></div>
     <img id="lb-img" alt="" />
+    <button class="lb-arrow prev" id="lb-prev" title="Vorheriges Bild">‹</button>
+    <button class="lb-arrow next" id="lb-next" title="Nächstes Bild">›</button>
     <div class="lb-actions">
       <button class="btn-primary" id="lb-download">⬇ Bild herunterladen</button>
       <button class="btn-ghost" id="lb-close">Schließen</button>
@@ -367,38 +449,71 @@
     }
   ];
 
-  // ---------- IndexedDB für Bilder ----------
+  // ---------- IndexedDB für Bilder + Videos ----------
   let dbPromise = null;
   function openDB() {
     if (dbPromise) return dbPromise;
     dbPromise = new Promise((resolve, reject) => {
-      const req = indexedDB.open("prompt-hub", 1);
-      req.onupgradeneeded = () => req.result.createObjectStore("images");
-      req.onsuccess = () => resolve(req.result);
+      const req = indexedDB.open("prompt-hub", 2);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains("images")) db.createObjectStore("images");
+        if (!db.objectStoreNames.contains("videos")) db.createObjectStore("videos");
+      };
+      // Ein anderer (älterer) Prompt-Hub-Tab hält die Datenbank fest
+      req.onblocked = () => toast("Bitte alle anderen Prompt-Hub-Tabs schließen und diese Seite neu laden!");
+      req.onsuccess = () => {
+        const db = req.result;
+        // Gibt die Datenbank frei, wenn ein anderer Tab ein Update braucht
+        db.onversionchange = () => { db.close(); dbPromise = null; };
+        resolve(db);
+      };
       req.onerror = () => reject(req.error);
     });
     return dbPromise;
   }
-  function idbPut(id, dataUrl) {
+  function idbPut(store, id, val) {
     return openDB().then((db) => new Promise((res, rej) => {
-      const tx = db.transaction("images", "readwrite");
-      tx.objectStore("images").put(dataUrl, id);
+      const tx = db.transaction(store, "readwrite");
+      tx.objectStore(store).put(val, id);
       tx.oncomplete = res; tx.onerror = () => rej(tx.error);
     }));
   }
-  function idbGet(id) {
+  function idbGet(store, id) {
     return openDB().then((db) => new Promise((res, rej) => {
-      const req = db.transaction("images").objectStore("images").get(id);
+      const req = db.transaction(store).objectStore(store).get(id);
       req.onsuccess = () => res(req.result || null);
       req.onerror = () => rej(req.error);
     }));
   }
-  function idbDel(id) {
+  function idbDel(store, id) {
     return openDB().then((db) => new Promise((res, rej) => {
-      const tx = db.transaction("images", "readwrite");
-      tx.objectStore("images").delete(id);
+      const tx = db.transaction(store, "readwrite");
+      tx.objectStore(store).delete(id);
       tx.oncomplete = res; tx.onerror = () => rej(tx.error);
     }));
+  }
+  const imgPut = (id, u) => idbPut("images", id, u);
+  const imgGet = (id) => idbGet("images", id);
+  const imgDel = (id) => idbDel("images", id);
+  const vidPut = (id, b) => idbPut("videos", id, b);
+  const vidGet = (id) => idbGet("videos", id);
+  const vidDel = (id) => idbDel("videos", id);
+  function blobToDataURL(blob) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.onerror = () => rej(r.error);
+      r.readAsDataURL(blob);
+    });
+  }
+  function dataURLToBlob(u) {
+    const [meta, b64] = String(u).split(",");
+    const mime = (meta.match(/data:(.*?)(;|$)/) || [null, "video/mp4"])[1];
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
   }
 
   // ---------- Daten ----------
@@ -406,26 +521,36 @@
   let activeCat = "Alle";
   let onlyFav = false;
   let editId = null;
-  let pendingImg = null;     // dataURL für den Modal-Entwurf
-  let pendingImgRemoved = false;
+  let pendingImgs = [];        // [{ id: vorhandene Bild-ID | null (neu), url: dataURL }]
+  let origImgIds = [];         // Bild-IDs beim Öffnen des Modals (für Lösch-Abgleich)
+  let pendingVid = null;       // neues Video (File/Blob)
+  let pendingVidRemoved = false;
+  let hadVid = false;          // hatte der Eintrag beim Öffnen schon ein Video?
 
+  function migrate(p) {
+    if (p.model === undefined) p.model = "";
+    if (p.desc === undefined) p.desc = "";
+    // alt (v2): ein Bild unter der Prompt-ID -> neu: Liste von Bild-IDs
+    if (!Array.isArray(p.imgIds)) p.imgIds = p.hasImg ? [p.id] : [];
+    p.hasImg = p.imgIds.length > 0;
+    if (p.hasVid === undefined) p.hasVid = false;
+    if (p.videoUrl === undefined) p.videoUrl = "";
+    return p;
+  }
   function load() {
     try {
       const raw = localStorage.getItem(LS_KEY);
       if (raw) {
         const arr = JSON.parse(raw);
-        arr.forEach((p) => {
-          if (p.model === undefined) p.model = "";
-          if (p.hasImg === undefined) p.hasImg = false;
-          if (p.desc === undefined) p.desc = "";
-        });
+        arr.forEach(migrate);
         return arr;
       }
     } catch (e) { /* zerstörte Daten -> Neustart mit Seed */ }
-    return SEED.map((s) => ({ ...s, hasImg: false }));
+    return SEED.map((s) => migrate({ ...s, hasImg: false }));
   }
   function save() { localStorage.setItem(LS_KEY, JSON.stringify(data)); }
   function uid() { return "p-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
+  function imgUid() { return "i-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
   function esc(s) {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -495,13 +620,42 @@
     countEl.textContent = `${list.length} Prompt${list.length === 1 ? "" : "s"}` +
       (data.length !== list.length ? ` (von ${data.length})` : "");
     emptyEl.hidden = list.length > 0;
-    gridEl.innerHTML = list.map((p) => `
-      <div class="card" data-id="${p.id}">
-        ${p.hasImg ? `
-        <div class="card-img" data-act="view" title="Bild ansehen">
-          <img data-imgid="${p.id}" alt="" loading="lazy" />
+    gridEl.innerHTML = list.map((p) => {
+      const imgs = p.imgIds || [];
+      const hasVideo = p.hasVid || p.videoUrl;
+      // Schritt-Ansicht (Ausklappbereiche) sobald mehrere Bilder oder ein Video dranhängen
+      const stepMode = imgs.length > 1 || hasVideo;
+      const cover = imgs.length ? `
+        <div class="card-img" data-act="view" data-idx="0" title="Bild ansehen">
+          <img data-imgid="${imgs[0]}" alt="" loading="lazy" />
           <span class="cat-overlay"><span class="cat">${esc(p.cat)}</span></span>
-        </div>` : ""}
+          ${imgs.length > 1 ? `<span class="img-count">🖼 ${imgs.length} Bilder</span>` : ""}
+        </div>` : "";
+      const videoSec = hasVideo ? `
+          <details class="sec">
+            <summary>🎬 Das fertige Reel</summary>
+            <div class="sec-body">
+              ${p.hasVid ? `<video class="card-video" data-vid="${p.id}" controls preload="none"></video>` : ""}
+              ${p.videoUrl ? `<a class="btn-link" href="${esc(p.videoUrl)}" target="_blank" rel="noopener">▶ Video ansehen (öffnet Link)</a>` : ""}
+            </div>
+          </details>` : "";
+      const body = stepMode ? `
+          ${imgs.length ? `
+          <details class="sec">
+            <summary>🖼 Die Bilder / Frames (${imgs.length})</summary>
+            <div class="sec-body"><div class="thumbs">
+              ${imgs.map((id, i) => `<img data-imgid="${id}" data-act="view" data-idx="${i}" alt="" loading="lazy" title="Bild ${i + 1} ansehen" />`).join("")}
+            </div></div>
+          </details>` : ""}
+          <details class="sec">
+            <summary>📝 Die Anleitung / der Prompt</summary>
+            <div class="sec-body"><div class="prompt-text open">${esc(p.text)}</div></div>
+          </details>
+          ${videoSec}` : `
+          <div class="prompt-text" data-act="toggle" title="Klick zum Auf-/Zuklappen">${esc(p.text)}</div>`;
+      return `
+      <div class="card" data-id="${p.id}">
+        ${cover}
         <div class="card-body">
           <div class="card-top">
             <h3>${esc(p.title)}</h3>
@@ -509,11 +663,13 @@
           </div>
           ${p.desc ? `<div class="desc">${esc(p.desc)}</div>` : ""}
           <div class="meta">
-            ${p.hasImg ? "" : `<span class="cat">${esc(p.cat)}</span>`}
-            ${p.model ? `<span class="model-badge">${esc(p.model)}</span>` : ""}
+            ${imgs.length ? "" : `<span class="cat">${esc(p.cat)}</span>`}
+            ${p.model ? (/ideenwerk/i.test(p.model)
+              ? `<a class="model-badge ideenwerk" href="https://ideenwerk.engelmann-promotion.de" target="_blank" rel="noopener" title="Erstellt mit der Ideenwerk-App — Infos & Testphase auf der Ideenwerk-Seite">💡 ${esc(p.model)}</a>`
+              : `<span class="model-badge">${esc(p.model)}</span>`) : ""}
             ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
           </div>
-          <div class="prompt-text" data-act="toggle" title="Klick zum Auf-/Zuklappen">${esc(p.text)}</div>
+          ${body}
           ${p.note ? `<div class="note">💡 ${esc(p.note)}</div>` : ""}
           <div class="card-actions">
             <button class="btn-copy" data-act="copy">📋 Kopieren</button>
@@ -521,11 +677,21 @@
             <button class="icon-btn del" data-act="del" title="Löschen">🗑</button>
           </div>
         </div>
-      </div>
-    `).join("");
+      </div>`;
+    }).join("");
     // Bilder asynchron aus IndexedDB nachladen
     gridEl.querySelectorAll("img[data-imgid]").forEach((img) => {
-      idbGet(img.dataset.imgid).then((url) => { if (url) img.src = url; });
+      imgGet(img.dataset.imgid).then((url) => { if (url) img.src = url; });
+    });
+    // Videos erst laden, wenn der Bereich aufgeklappt wird
+    gridEl.querySelectorAll("details.sec").forEach((d) => {
+      d.addEventListener("toggle", () => {
+        if (!d.open) return;
+        const v = d.querySelector("video[data-vid]");
+        if (v && !v.src) {
+          vidGet(v.dataset.vid).then((blob) => { if (blob) v.src = URL.createObjectURL(blob); });
+        }
+      });
     });
   }
 
@@ -540,11 +706,12 @@
     if (act === "fav") { p.fav = !p.fav; save(); renderGrid(); }
     if (act === "copy") copyText(p.text, actEl);
     if (act === "edit") openModal(p);
-    if (act === "view") openLightbox(p);
+    if (act === "view") openLightbox(p, parseInt(actEl.dataset.idx || "0", 10));
     if (act === "del") {
       if (confirm(`„${p.title}" wirklich löschen?`)) {
         data = data.filter((x) => x.id !== p.id);
-        idbDel(p.id);
+        (p.imgIds || []).forEach(imgDel);
+        if (p.hasVid) vidDel(p.id);
         save(); renderAll();
       }
     }
@@ -569,27 +736,52 @@
     document.body.removeChild(ta);
   }
 
-  // ---------- Lightbox ----------
+  // ---------- Lightbox (mit Blättern bei mehreren Bildern) ----------
   const lightbox = document.getElementById("lightbox");
   const lbImg = document.getElementById("lb-img");
   const lbTitle = document.getElementById("lb-title");
+  const lbPrev = document.getElementById("lb-prev");
+  const lbNext = document.getElementById("lb-next");
   let lbCurrent = null;
-  function openLightbox(p) {
-    idbGet(p.id).then((url) => {
+  let lbIdx = 0;
+  function openLightbox(p, idx) {
+    const imgs = p.imgIds || [];
+    if (!imgs.length) return;
+    lbCurrent = p;
+    lbIdx = Math.max(0, Math.min(idx || 0, imgs.length - 1));
+    showLightbox();
+  }
+  function showLightbox() {
+    const imgs = lbCurrent.imgIds;
+    imgGet(imgs[lbIdx]).then((url) => {
       if (!url) return;
-      lbCurrent = p;
       lbImg.src = url;
-      lbTitle.textContent = p.title;
+      lbTitle.textContent = lbCurrent.title + (imgs.length > 1 ? ` — Bild ${lbIdx + 1} von ${imgs.length}` : "");
+      lbPrev.style.display = lbNext.style.display = imgs.length > 1 ? "" : "none";
       lightbox.classList.add("open");
     });
   }
+  function lbStep(dir) {
+    if (!lbCurrent) return;
+    const n = lbCurrent.imgIds.length;
+    if (n < 2) return;
+    lbIdx = (lbIdx + dir + n) % n;
+    showLightbox();
+  }
+  lbPrev.addEventListener("click", () => lbStep(-1));
+  lbNext.addEventListener("click", () => lbStep(1));
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("open")) return;
+    if (e.key === "ArrowLeft") lbStep(-1);
+    if (e.key === "ArrowRight") lbStep(1);
+  });
   document.getElementById("lb-close").addEventListener("click", () => lightbox.classList.remove("open"));
   lightbox.addEventListener("click", (e) => { if (e.target === lightbox) lightbox.classList.remove("open"); });
   document.getElementById("lb-download").addEventListener("click", () => {
     if (!lbCurrent) return;
     const a = document.createElement("a");
     a.href = lbImg.src;
-    a.download = slug(lbCurrent.title) + ".jpg";
+    a.download = slug(lbCurrent.title) + (lbCurrent.imgIds.length > 1 ? "-" + (lbIdx + 1) : "") + ".jpg";
     a.click();
     toast("Bild heruntergeladen");
   });
@@ -607,21 +799,26 @@
 
   const imgDrop = document.getElementById("img-drop");
   const imgFile = document.getElementById("img-file");
-  const imgPreview = document.getElementById("img-preview");
-  const imgPreviewImg = document.getElementById("img-preview-img");
+  const imgThumbs = document.getElementById("img-thumbs");
+  const vidDrop = document.getElementById("vid-drop");
+  const vidFile = document.getElementById("vid-file");
+  const vidPreview = document.getElementById("vid-preview");
+  const vidPreviewVideo = document.getElementById("vid-preview-video");
+  const fVurl = document.getElementById("f-vurl");
 
-  function setPendingImg(dataUrl) {
-    pendingImg = dataUrl;
-    pendingImgRemoved = false;
-    if (dataUrl) {
-      imgPreviewImg.src = dataUrl;
-      imgPreview.style.display = "block";
-      imgDrop.style.display = "none";
-    } else {
-      imgPreview.style.display = "none";
-      imgDrop.style.display = "block";
-    }
+  function renderImgThumbs() {
+    imgThumbs.innerHTML = pendingImgs.map((x, i) => `
+      <div class="img-thumb">
+        <img src="${x.url}" alt="Bild ${i + 1}" />
+        <button class="thumb-remove" data-i="${i}" title="Bild entfernen">✕</button>
+      </div>`).join("");
   }
+  imgThumbs.addEventListener("click", (e) => {
+    const btn = e.target.closest(".thumb-remove");
+    if (!btn) return;
+    pendingImgs.splice(parseInt(btn.dataset.i, 10), 1);
+    renderImgThumbs();
+  });
   function compressImage(fileOrBlob) {
     return new Promise((resolve, reject) => {
       const url = URL.createObjectURL(fileOrBlob);
@@ -643,28 +840,57 @@
       img.src = url;
     });
   }
-  function handleImageInput(file) {
-    if (!file || !file.type.startsWith("image/")) return;
-    compressImage(file)
-      .then(setPendingImg)
-      .catch(() => toast("Bild konnte nicht gelesen werden"));
+  function handleImageInput(files) {
+    [...(files || [])].filter((f) => f && f.type.startsWith("image/")).forEach((file) => {
+      compressImage(file)
+        .then((url) => { pendingImgs.push({ id: null, url }); renderImgThumbs(); })
+        .catch(() => toast("Bild konnte nicht gelesen werden"));
+    });
   }
   imgDrop.addEventListener("click", () => imgFile.click());
-  imgFile.addEventListener("change", () => { handleImageInput(imgFile.files[0]); imgFile.value = ""; });
+  imgFile.addEventListener("change", () => { handleImageInput(imgFile.files); imgFile.value = ""; });
   imgDrop.addEventListener("dragover", (e) => { e.preventDefault(); imgDrop.classList.add("drag"); });
   imgDrop.addEventListener("dragleave", () => imgDrop.classList.remove("drag"));
   imgDrop.addEventListener("drop", (e) => {
     e.preventDefault(); imgDrop.classList.remove("drag");
-    handleImageInput(e.dataTransfer.files[0]);
+    handleImageInput(e.dataTransfer.files);
   });
   document.addEventListener("paste", (e) => {
     if (!overlay.classList.contains("open")) return;
     const item = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith("image/"));
-    if (item) { handleImageInput(item.getAsFile()); e.preventDefault(); }
+    if (item) { handleImageInput([item.getAsFile()]); e.preventDefault(); }
   });
-  document.getElementById("img-remove").addEventListener("click", () => {
-    pendingImg = null; pendingImgRemoved = true;
-    imgPreview.style.display = "none"; imgDrop.style.display = "block";
+
+  // ---------- Video im Modal ----------
+  function setPendingVid(blob) {
+    pendingVid = blob;
+    pendingVidRemoved = false;
+    vidPreviewVideo.src = URL.createObjectURL(blob);
+    vidPreview.style.display = "block";
+    vidDrop.style.display = "none";
+    const mb = Math.round(blob.size / 1024 / 1024);
+    if (mb > 40) toast(`Achtung: Video ist ${mb} MB groß — Tipp: lieber YouTube-Link nutzen`);
+  }
+  function clearVidUI() {
+    vidPreviewVideo.removeAttribute("src");
+    vidPreview.style.display = "none";
+    vidDrop.style.display = "block";
+  }
+  function handleVideoInput(file) {
+    if (!file || !file.type.startsWith("video/")) return;
+    setPendingVid(file);
+  }
+  vidDrop.addEventListener("click", () => vidFile.click());
+  vidFile.addEventListener("change", () => { handleVideoInput(vidFile.files[0]); vidFile.value = ""; });
+  vidDrop.addEventListener("dragover", (e) => { e.preventDefault(); vidDrop.classList.add("drag"); });
+  vidDrop.addEventListener("dragleave", () => vidDrop.classList.remove("drag"));
+  vidDrop.addEventListener("drop", (e) => {
+    e.preventDefault(); vidDrop.classList.remove("drag");
+    handleVideoInput(e.dataTransfer.files[0]);
+  });
+  document.getElementById("vid-remove").addEventListener("click", () => {
+    pendingVid = null; pendingVidRemoved = true;
+    clearVidUI();
   });
 
   function openModal(p) {
@@ -677,13 +903,38 @@
     fTags.value = p ? (p.tags || []).join(", ") : "";
     fText.value = p ? p.text : "";
     fNote.value = p ? (p.note || "") : "";
-    setPendingImg(null);
-    pendingImgRemoved = false;
-    if (p && p.hasImg) idbGet(p.id).then((url) => { if (url && editId === p.id) setPendingImg(url); });
+    fVurl.value = p ? (p.videoUrl || "") : "";
+    pendingImgs = [];
+    origImgIds = p ? (p.imgIds || []).slice() : [];
+    renderImgThumbs();
+    pendingVid = null; pendingVidRemoved = false;
+    hadVid = !!(p && p.hasVid);
+    clearVidUI();
+    if (p) {
+      Promise.all((p.imgIds || []).map((id) => imgGet(id).then((url) => ({ id, url }))))
+        .then((list) => {
+          if (editId !== p.id) return;
+          pendingImgs = list.filter((x) => x.url);
+          renderImgThumbs();
+        });
+      if (p.hasVid) {
+        vidGet(p.id).then((blob) => {
+          if (blob && editId === p.id && !pendingVidRemoved) {
+            vidPreviewVideo.src = URL.createObjectURL(blob);
+            vidPreview.style.display = "block";
+            vidDrop.style.display = "none";
+          }
+        });
+      }
+    }
     overlay.classList.add("open");
     fTitle.focus();
   }
-  function closeModal() { overlay.classList.remove("open"); editId = null; pendingImg = null; }
+  function closeModal() {
+    overlay.classList.remove("open");
+    editId = null; pendingImgs = []; origImgIds = [];
+    pendingVid = null; pendingVidRemoved = false; hadVid = false;
+  }
   document.getElementById("btn-new").addEventListener("click", () => openModal(null));
   document.getElementById("btn-cancel").addEventListener("click", closeModal);
   overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
@@ -704,39 +955,62 @@
     } else {
       p = { id: uid(), title, desc: fDesc.value.trim(), cat: fCat.value,
             model: fModel.value.trim(), tags, text,
-            note: fNote.value.trim(), fav: false, created: Date.now(), hasImg: false };
+            note: fNote.value.trim(), fav: false, created: Date.now(),
+            imgIds: [], hasImg: false, hasVid: false, videoUrl: "" };
       data.unshift(p);
     }
-    const finish = () => { save(); closeModal(); renderAll(); toast("Prompt gespeichert"); };
-    if (pendingImg) {
-      p.hasImg = true;
-      idbPut(p.id, pendingImg).then(finish).catch(() => { toast("Bild konnte nicht gespeichert werden"); finish(); });
-    } else if (pendingImgRemoved && p.hasImg) {
-      p.hasImg = false;
-      idbDel(p.id).then(finish).catch(finish);
-    } else {
-      finish();
+    p.videoUrl = fVurl.value.trim();
+    const jobs = [];
+    // Bilder: neue speichern, Reihenfolge übernehmen, entfernte löschen
+    const finalIds = pendingImgs.map((x) => {
+      if (x.id) return x.id;
+      const nid = imgUid();
+      jobs.push(imgPut(nid, x.url));
+      return nid;
+    });
+    origImgIds.filter((id) => !finalIds.includes(id)).forEach((id) => jobs.push(imgDel(id)));
+    p.imgIds = finalIds;
+    p.hasImg = finalIds.length > 0;
+    // Video: neues speichern oder entferntes löschen
+    if (pendingVid) {
+      jobs.push(vidPut(p.id, pendingVid));
+      p.hasVid = true;
+    } else if (pendingVidRemoved && hadVid) {
+      jobs.push(vidDel(p.id));
+      p.hasVid = false;
     }
+    const finish = () => { save(); closeModal(); renderAll(); toast("Prompt gespeichert"); };
+    Promise.all(jobs).then(finish).catch(() => { toast("Bild/Video konnte nicht komplett gespeichert werden"); finish(); });
   });
 
   // ---------- Export / Import ----------
   document.getElementById("btn-export").addEventListener("click", () => {
-    const withImgs = data.filter((p) => p.hasImg);
-    Promise.all(withImgs.map((p) => idbGet(p.id).then((url) => [p.id, url])))
-      .then((pairs) => {
-        const images = {};
-        pairs.forEach(([id, url]) => { if (url) images[id] = url; });
-        const blob = new Blob(
-          [JSON.stringify({ version: 2, prompts: data, images }, null, 2)],
-          { type: "application/json" }
-        );
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = `prompt-hub-backup-${new Date().toISOString().slice(0, 10)}.json`;
-        a.click();
-        URL.revokeObjectURL(a.href);
-        toast("Backup-Datei erstellt (inkl. Bilder)");
-      });
+    const allImgIds = data.flatMap((p) => p.imgIds || []);
+    const vidPrompts = data.filter((p) => p.hasVid);
+    const includeVids = vidPrompts.length > 0 &&
+      confirm("Videos mit ins Backup packen?\n\nOK = mit Videos (Datei wird deutlich größer)\nAbbrechen = ohne Videos (Video-Links bleiben trotzdem erhalten)");
+    Promise.all([
+      Promise.all(allImgIds.map((id) => imgGet(id).then((url) => [id, url]))),
+      includeVids
+        ? Promise.all(vidPrompts.map((p) => vidGet(p.id)
+            .then((blob) => (blob ? blobToDataURL(blob).then((u) => [p.id, u]) : [p.id, null]))))
+        : Promise.resolve([])
+    ]).then(([imgPairs, vidPairs]) => {
+      const images = {};
+      imgPairs.forEach(([id, url]) => { if (url) images[id] = url; });
+      const videos = {};
+      vidPairs.forEach(([id, url]) => { if (url) videos[id] = url; });
+      const blob = new Blob(
+        [JSON.stringify({ version: 3, prompts: data, images, videos }, null, 2)],
+        { type: "application/json" }
+      );
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `prompt-hub-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast(includeVids ? "Backup-Datei erstellt (inkl. Bilder + Videos)" : "Backup-Datei erstellt (inkl. Bilder, ohne Videos)");
+    });
   });
   const importFile = document.getElementById("import-file");
   document.getElementById("btn-import").addEventListener("click", () => importFile.click());
@@ -749,8 +1023,9 @@
         const raw = JSON.parse(reader.result);
         const incoming = Array.isArray(raw) ? raw : (raw.prompts || []);
         const images = Array.isArray(raw) ? {} : (raw.images || {});
+        const videos = Array.isArray(raw) ? {} : (raw.videos || {});
         let added = 0;
-        const imgWrites = [];
+        const writes = [];
         incoming.forEach((p) => {
           if (p && p.title && p.text && !data.some((x) => x.id === p.id)) {
             const np = {
@@ -760,17 +1035,28 @@
               model: p.model || "",
               tags: Array.isArray(p.tags) ? p.tags : [], text: p.text,
               note: p.note || "", fav: !!p.fav, created: p.created || Date.now(),
-              hasImg: false
+              imgIds: [], hasImg: false, hasVid: false, videoUrl: p.videoUrl || ""
             };
-            if (images[p.id]) {
-              np.hasImg = true;
-              imgWrites.push(idbPut(np.id, images[p.id]));
+            // v3: eigene Bild-ID-Liste — v2/alt: ein Bild unter der Prompt-ID
+            const srcIds = (Array.isArray(p.imgIds) && p.imgIds.length)
+              ? p.imgIds
+              : (images[p.id] ? [p.id] : []);
+            srcIds.forEach((sid) => {
+              if (images[sid]) {
+                np.imgIds.push(sid);
+                writes.push(imgPut(sid, images[sid]));
+              }
+            });
+            np.hasImg = np.imgIds.length > 0;
+            if (videos[p.id]) {
+              np.hasVid = true;
+              writes.push(vidPut(np.id, dataURLToBlob(videos[p.id])));
             }
             data.push(np);
             added++;
           }
         });
-        Promise.all(imgWrites).then(() => {
+        Promise.all(writes).then(() => {
           save(); renderAll();
           toast(`${added} Prompt${added === 1 ? "" : "s"} importiert`);
         });
