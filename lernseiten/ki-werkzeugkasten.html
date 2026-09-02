@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Der KI-Werkzeugkasten: Alle Tools erklärt | Pfalz Digital Lern-Hub</title>
-<meta name="description" content="Apify, Composio, Higgsfield, Fish Audio, Routinen, Skills und eigene Web-Apps: Der KI-Werkzeugkasten rund um Claude – jedes Werkzeug erklärt, mit Schritt-für-Schritt-Anleitung. Stand August 2026.">
+<meta name="description" content="Apify, Composio, Higgsfield, Fish Audio, Routinen, Skills wie Frontend Slides und eigene Web-Apps: Der KI-Werkzeugkasten rund um Claude – jedes Werkzeug erklärt, mit Schritt-für-Schritt-Anleitung. Stand September 2026.">
 <link rel="stylesheet" href="../assets/fonts.css">
 <style>
   :root {
@@ -242,6 +242,24 @@
             <li>Testlauf in einem neuen Chat: <em>„Nutze den Skill newsletter-bauen."</em> Ergebnis prüfen – Korrekturen sagst du einmal, Claude schreibt sie in den Skill zurück.</li>
           </ol>
           <div class="merke"><strong>Merke:</strong> Ein Skill ist im Kern eine Textdatei. Er wird besser, je öfter du Korrekturen einarbeiten lässt – wie ein Mitarbeiter, der dazulernt.</div>
+        </details>
+      </div>
+
+      <div class="werkzeug">
+        <span class="etikett">Fertiger Skill</span>
+        <h3>Frontend Slides</h3>
+        <div class="funktion">Präsentationen als Webseite – ohne PowerPoint</div>
+        <p>Ein Beispiel dafür, dass man Skills nicht immer selbst schreiben muss: <em>Frontend Slides</em> ist ein frei verfügbarer Skill (von Zara Zhang, MIT-Lizenz), der aus einem Thema eine komplette Präsentation baut – als einzelne HTML-Datei, die in jedem Browser läuft. Zwölf fertige Design-Stile von „Swiss Modern" bis „Paper &amp; Ink", weiche Übergänge, Tastatur-Steuerung, und auf Wunsch wird eine vorhandene PowerPoint-Datei samt Bildern übernommen. Kein Programm muss installiert werden, es entsteht kein Abo.</p>
+        <div class="einsatz"><strong>Typischer Einsatz:</strong> Vorträge, Kundenpräsentationen, Pitches, Schulungsfolien – alles, was bisher in PowerPoint entstand und jetzt als Link verschickt oder als PDF exportiert werden soll.</div>
+        <details class="sogehts">
+          <summary>So geht's – Schritt für Schritt</summary>
+          <ol>
+            <li>Skill-Datei <em>frontend-slides.skill</em> herunterladen (GitHub: <em>zarazhangrui/frontend-slides</em>) und Claude geben: <em>„Installiere diesen Skill."</em> Claude legt ihn im Skills-Ordner ab – einmalig.</li>
+            <li>Im Chat sagen: <em>„Bau mir eine Präsentation über …"</em> – oder eine PowerPoint-Datei anhängen mit <em>„Mach daraus eine Web-Präsentation."</em></li>
+            <li>Claude zeigt zuerst zwei, drei Design-Vorschauen. Du wählst nach Gefühl – beschreiben musst du nichts.</li>
+            <li>Ergebnis ist eine HTML-Datei: im Browser öffnen, mit Pfeiltasten durchblättern, per E-Mail verschicken oder als PDF exportieren lassen.</li>
+          </ol>
+          <div class="merke"><strong>Merke:</strong> Der Skill lädt Schriften von einem externen Server nach. Für Kunden-Präsentationen im Netz die Schrift lokal einbetten lassen – sonst gilt dasselbe DSGVO-Problem wie bei Google Fonts.</div>
         </details>
       </div>
 
